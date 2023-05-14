@@ -8,9 +8,23 @@ import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
 import { useNavigation } from "@react-navigation/native";
+import { auth, db } from "../config/firebase.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const navigation = useNavigation();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  //TODO : Add validation for the inputs
+  //TODO : google sign in
+
+  const LoginFireBase = () => {
+    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+      navigation.navigate("Home");
+    });
+  };
+
   return (
     <SafeAreaView>
       <View style={{ padding: Spacing * 2 }}>
@@ -40,6 +54,7 @@ export default function Login() {
           <TextInput
             placeholder="Email"
             placeholderTextColor={Colors.darkText}
+            onChangeText={(text) => setEmail(text)}
             style={{
               borderWidth: 1,
               backgroundColor: Colors.lightPrimary,
@@ -51,6 +66,7 @@ export default function Login() {
           />
           <TextInput
             placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
             placeholderTextColor={Colors.darkText}
             secureTextEntry={true}
             style={{
@@ -76,6 +92,7 @@ export default function Login() {
           </Text>
         </View>
         <TouchableOpacity
+          onPress={() => LoginFireBase()}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,

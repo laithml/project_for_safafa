@@ -8,9 +8,42 @@ import Font from "../constants/Font";
 import { TextInput } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { auth, db } from "../config/firebase.js";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 
 export default function SignUp() {
   const navigation = useNavigation();
+  const [fullName, setFullName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  //TODO : Add validation for the inputs
+
+  //TODO : google sign in
+  const SignUpFireBase = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        const userRef = doc(db, "users", userCredential.user.uid);
+        const userDetails = {
+          fullName: fullName,
+          email: email,
+          phoneNumber: phoneNumber,
+          password: password,
+        };
+        setDoc(userRef, userDetails).then(() => {
+          console.log("Document written with ID: ", userRef.id);
+          navigation.navigate("Login");
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        //TODO : Show error message for the user
+      });
+  };
+
   return (
     <SafeAreaView>
       <View style={{ padding: Spacing }}>
@@ -39,6 +72,7 @@ export default function SignUp() {
         <View style={{ marginVertical: Spacing }}>
           <TextInput
             placeholder="Full Name"
+            onChangeText={(text) => setFullName(text)}
             placeholderTextColor={Colors.darkText}
             style={{
               borderWidth: 1,
@@ -51,6 +85,7 @@ export default function SignUp() {
           />
           <TextInput
             placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
             placeholderTextColor={Colors.darkText}
             style={{
               borderWidth: 1,
@@ -64,6 +99,7 @@ export default function SignUp() {
           <TextInput
             placeholder="Phone Number"
             placeholderTextColor={Colors.darkText}
+            onChangeText={(text) => setPhoneNumber(text)}
             style={{
               borderWidth: 1,
               backgroundColor: Colors.lightPrimary,
@@ -75,6 +111,7 @@ export default function SignUp() {
           />
           <TextInput
             placeholder="Password"
+            onChangeText={(text) => setPassword(text)}
             placeholderTextColor={Colors.darkText}
             secureTextEntry={true}
             style={{
@@ -88,6 +125,7 @@ export default function SignUp() {
           />
         </View>
         <TouchableOpacity
+          onPress={SignUpFireBase}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,

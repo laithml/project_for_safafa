@@ -7,23 +7,24 @@ import FontSize from "../constants/FontSize";
 import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { auth, db } from "../config/firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import FP from "./ForgetPassowrd.js";
+import { sendPasswordResetEmail } from "firebase/auth";
 
-export default function Login() {
+export default function FP() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
 
   //TODO : Add validation for the inputs
-  //TODO : google sign in
 
-  const LoginFireBase = () => {
-    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      navigation.navigate("Home");
-    });
+  const forgetPasswordHandler = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log("email sent");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -36,19 +37,20 @@ export default function Login() {
               color: Colors.primary,
               marginVertical: Spacing * 3,
               FontFamily: Font["poppins-semiBold"],
+              textAlign: "center",
             }}
           >
-            Login Here
+            You Don't Remember Your Password?
           </Text>
           <Text
             style={{
               FontFamily: Font["poppins-semiBold"],
-              fontSize: FontSize.large,
+              fontSize: FontSize.medium,
               maxWidth: "60%",
               textAlign: "center",
             }}
           >
-            Welcome back you've been missed!
+            Enter your email and we will send you a link to reset your password
           </Text>
         </View>
         <View style={{ marginVertical: Spacing * 3 }}>
@@ -65,41 +67,9 @@ export default function Login() {
               borderColor: Colors.gray,
             }}
           />
-          <TextInput
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            placeholderTextColor={Colors.darkText}
-            secureTextEntry={true}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: Colors.gray,
-            }}
-          />
-        </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ForgetPassword")}
-            style={{
-              alignSelf: "flex-end",
-            }}
-          >
-            <Text
-              style={{
-                FontFamily: Font["poppins-semiBold"],
-                fontSize: FontSize.small,
-                color: Colors.primary,
-              }}
-            >
-              Forgot Password?
-            </Text>
-          </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => LoginFireBase()}
+          onPress={() => forgetPasswordHandler()}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,
@@ -121,23 +91,7 @@ export default function Login() {
               fontSize: FontSize.large,
             }}
           >
-            Sign In
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SignUp")}
-          style={{
-            padding: Spacing,
-          }}
-        >
-          <Text
-            style={{
-              color: Colors.Text,
-              textAlign: "center",
-              fontSize: FontSize.medium,
-            }}
-          >
-            Create a new account
+            Send Email
           </Text>
         </TouchableOpacity>
       </View>

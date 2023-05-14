@@ -44,6 +44,8 @@ export default function SignUp() {
       });
   };
 
+  function googleSignIn() {}
+
   return (
     <SafeAreaView>
       <View style={{ padding: Spacing }}>
@@ -166,68 +168,6 @@ export default function SignUp() {
             Already have an account
           </Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={{ padding: Spacing * 2 }}>
-        <Text
-          style={{
-            color: Colors.primary,
-            textAlign: "center",
-            fontSize: FontSize.small,
-          }}
-        >
-          Or Sign Up With
-        </Text>
-        <View
-          style={{
-            marginTop: Spacing,
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <TouchableOpacity
-            style={{
-              padding: Spacing,
-              backgroundColor: Colors.gray,
-              broderRadius: Spacing / 2,
-              marginHorizontal: Spacing,
-            }}
-          >
-            <Ionicons
-              name="logo-google"
-              size={Spacing * 2}
-              color={Colors.text}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              padding: Spacing,
-              backgroundColor: Colors.gray,
-              broderRadius: Spacing / 2,
-              marginHorizontal: Spacing,
-            }}
-          >
-            <Ionicons
-              name="logo-apple"
-              size={Spacing * 2}
-              color={Colors.text}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              padding: Spacing,
-              backgroundColor: Colors.gray,
-              broderRadius: Spacing / 2,
-              marginHorizontal: Spacing,
-            }}
-          >
-            <Ionicons
-              name="logo-facebook"
-              size={Spacing * 2}
-              color={Colors.text}
-            />
-          </TouchableOpacity>
-        </View>
       </View>
     </SafeAreaView>
   );

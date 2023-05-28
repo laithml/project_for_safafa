@@ -8,7 +8,7 @@ import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
 import { useNavigation } from "@react-navigation/native";
-import { auth, db } from "../config/firebase.js";
+import { auth } from "../config/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import FP from "./ForgetPassowrd.js";
 
@@ -16,9 +16,6 @@ export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  //TODO : Add validation for the inputs
-  //TODO : google sign in
 
   const LoginFireBase = () => {
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {

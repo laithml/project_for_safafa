@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CourseCard } from "../components/courseCard";
 import { FlatList, StyleSheet } from "react-native";
 import { getCourses } from "../services/cousesServices";
@@ -15,7 +15,7 @@ export default function Courses({ navigation }) {
     );
   }
 
-  const [courses, setCourses] = useState(getCourses);
+  const [courses, setCourses] = React.useState(getCourses);
 
   return (
     <FlatList

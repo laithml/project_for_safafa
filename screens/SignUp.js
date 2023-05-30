@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../config/firebase.js";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
+import { SignUpFireBase } from "../services/auth";
 
 export default function SignUp() {
   const navigation = useNavigation();
@@ -83,33 +84,6 @@ export default function SignUp() {
       setErrorMessagePassword("");
     }
   };
-
-  //TODO : Add validation for the inputs
-
-  //TODO : google sign in
-  const SignUpFireBase = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
-        const userRef = doc(db, "users", userCredential.user.uid);
-        const userDetails = {
-          fullName: fullName,
-          email: email,
-          phoneNumber: phoneNumber,
-          password: password,
-        };
-        setDoc(userRef, userDetails).then(() => {
-          console.log("Document written with ID: ", userRef.id);
-          navigation.navigate("Login");
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        //TODO : Show error message for the user
-      });
-  };
-
-  function googleSignIn() {}
 
   return (
     <SafeAreaView>
@@ -257,7 +231,14 @@ export default function SignUp() {
           ) : null}
         </View>
         <TouchableOpacity
-          onPress={SignUpFireBase}
+          onPress={() => {
+            //TODO : handle false case
+            if (
+              SignUpFireBase(email, password, fullName, phoneNumber) === true
+            ) {
+              navigation.navigate("Login");
+            }
+          }}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,

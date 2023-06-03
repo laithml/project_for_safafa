@@ -4,7 +4,23 @@ import { FlatList, StyleSheet } from "react-native";
 import { getCourses } from "../services/cousesServices";
 
 export default function Courses({ navigation }) {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const coursesData = await getCourses();
+        setCourses(coursesData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   function renderCourse({ item: course }) {
+    console.log(course);
     return (
       <CourseCard
         {...course}
@@ -14,8 +30,6 @@ export default function Courses({ navigation }) {
       />
     );
   }
-
-  const [courses, setCourses] = useState(getCourses);
 
   return (
     <FlatList

@@ -2,8 +2,7 @@ import React from "react";
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
 
-export function CourseCard({ description, id, img, name, price, onPress }) {
-  console.log("Name is ");
+export function EventCard({ name, description, img, onPress }) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image style={styles.image} src={img} />
@@ -16,7 +15,6 @@ export function CourseCard({ description, id, img, name, price, onPress }) {
             borderBottomWidth: 5,
           }}
         />
-        <Text style={styles.price}>₪ {price}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -48,12 +46,6 @@ const styles = StyleSheet.create({
     color: Colors.text,
     marginBottom: 8,
     textAlign: "center",
-  },
-  price: {
-    fontSize: 22,
-    marginTop: 8,
-    fontWeight: "600",
-    alignSelf: "flex-end",
   },
   description: {
     fontSize: 16,

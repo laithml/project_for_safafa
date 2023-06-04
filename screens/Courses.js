@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   coursesListContainer: {
     backgroundColor: "#eeeeee",
-    paddingVertical: 8,
-    marginHorizontal: 8,
+    paddingVertical: 16,
+    marginHorizontal: 16,
   },
 });

@@ -33,8 +33,20 @@ exports.getCourse = (req,res) => {
 
 // Create a new course
 exports.createCourse = (req,res) => {
-    const refCourse = doc(db, "Courses", req.body.id);
-    setDoc(refCourse, req.body).then(() => {
+    console.log(req.body);
+    //generate id for the data
+    //TODO : EXITS COURSE !!!
+    const id= Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const data = {
+        id: id,
+        name: req.body.name,
+        img: req.body.img,
+        price: req.body.price,
+        description: req.body.description,
+    }
+    console.log(data);
+    const refCourse = doc(db, "Courses", data.id);
+    setDoc(refCourse, data).then(() => {
         res.status(201).send({message: "Course created successfully"});
     });
 }

@@ -11,7 +11,6 @@ export async function getEvents() {
       eventList.push(event.data());
     });
   });
-  console.log(eventList.length);
 
   return eventList;
 }

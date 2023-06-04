@@ -11,7 +11,6 @@ export async function getCourses() {
       coursesList.push(course.data());
     });
   });
-  console.log(coursesList.length);
 
   return coursesList;
 }

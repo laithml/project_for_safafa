@@ -18,7 +18,6 @@ export const SignUpFireBase = (email, password, fullName, phoneNumber) => {
         password: password,
       };
       setDoc(userRef, userDetails).then(() => {
-        console.log("Document written with ID: ", userRef.id);
         return true;
       });
     })

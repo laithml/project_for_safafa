@@ -3,7 +3,6 @@ import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
 
 export function CourseCard({ description, id, img, name, price, onPress }) {
-  console.log("Name is ");
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image style={styles.image} src={img} />

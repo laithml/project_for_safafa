@@ -20,7 +20,6 @@ export default function Courses({ navigation }) {
   }, []);
 
   function renderCourse({ item: course }) {
-    console.log(course);
     return (
       <CourseCard
         {...course}

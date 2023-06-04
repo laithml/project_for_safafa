@@ -20,7 +20,6 @@ export default function Events({ navigation }) {
   }, []);
 
   function renderEvent({ item: event }) {
-    console.log(event);
     return (
       <EventCard
         {...event}

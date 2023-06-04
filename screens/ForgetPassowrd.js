@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-gesture-handler";
 import FontSize from "../constants/FontSize";
@@ -8,24 +7,13 @@ import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import { auth, db } from "../config/firebase.js";
-import { sendPasswordResetEmail } from "firebase/auth";
+import { forgetPasswordHandler } from "../services/auth";
 
 export default function FP() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
 
   //TODO : Add validation for the inputs
-
-  const forgetPasswordHandler = () => {
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        console.log("email sent");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <SafeAreaView>
@@ -69,7 +57,7 @@ export default function FP() {
           />
         </View>
         <TouchableOpacity
-          onPress={() => forgetPasswordHandler()}
+          onPress={() => forgetPasswordHandler(email)}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,

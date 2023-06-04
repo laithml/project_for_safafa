@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-gesture-handler";
 import FontSize from "../constants/FontSize";
@@ -8,20 +7,12 @@ import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from "../config/firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import FP from "./ForgetPassowrd.js";
+import { LoginFireBase } from "../services/auth";
 
 export default function Login() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const LoginFireBase = () => {
-    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      navigation.navigate("Home");
-    });
-  };
 
   return (
     <SafeAreaView>
@@ -96,7 +87,10 @@ export default function Login() {
           </TouchableOpacity>
         </View>
         <TouchableOpacity
-          onPress={() => LoginFireBase()}
+          onPress={() => {
+            //TODO : handle false case
+            if (LoginFireBase(email, password)) navigation.navigate("Home");
+          }}
           style={{
             padding: Spacing * 2,
             backgroundColor: Colors.primary,

@@ -14,31 +14,38 @@ import RBSheet from "react-native-raw-bottom-sheet";
 const Footer = () => {
     const handleWazeClick = () => {
         Linking.openURL("https://waze.com/ul/hsv9h95es0");
-        // Replace "Your_Location_Link" with the actual location link obtained from Waze
     };
 
     const handleYoutubeClick = () => {
-        Linking.openURL("https://www.youtube.com/channel/UC44RVlWMlvptWUo0WmRoL9A"); // Replace with your YouTube link
+        Linking.openURL("https://www.youtube.com/channel/UC44RVlWMlvptWUo0WmRoL9A");
     };
 
     const handleFacebookClick = () => {
-        Linking.openURL("https://www.facebook.com/majlesbaitsfafa/"); // Replace with your Facebook link
+        Linking.openURL("https://www.facebook.com/majlesbaitsfafa/");
     };
 
     const handleInstagramClick = () => {
-        Linking.openURL("https://www.instagram.com/majls17"); // Replace with your Instagram link
+        Linking.openURL("https://www.instagram.com/majls17");
     };
+
+    const emailAddress = "beitzafa@matnasim.org.il";
+
 
     const handleEmailClick = () => {
-        Linking.openURL("mailto:beitzafa@matnasim.org.il"); // Replace with your email address
+        refEmailRBSheet.current.open();
     };
 
-    const phoneNumbers = ["02-679-0717", "02-678-0894"]; // Replace with your phone numbers
+    const handleEmailSelection = () => {
+        Linking.openURL(`mailto:${emailAddress}`);
+    };
 
-    const refRBSheet = useRef();
+    const phoneNumbers = ["02-679-0717", "02-678-0894"];
+
+    const refPhoneRBSheet = useRef();
+    const refEmailRBSheet = useRef();
 
     const handlePhoneClick = () => {
-        refRBSheet.current.open();
+        refPhoneRBSheet.current.open();
     };
 
     const handlePhoneSelection = (phoneNumber) => {
@@ -50,51 +57,84 @@ const Footer = () => {
             <View style={styles.iconGroup}>
                 <Text style={styles.iconGroupText}>Social Media</Text>
                 <View style={styles.iconRow}>
-                    <TouchableOpacity onPress={handleYoutubeClick} style={styles.iconContainer}>
-                        <Image source={require("../assets/youtube.png")} style={styles.icon} />
+                    <TouchableOpacity
+                        onPress={handleYoutubeClick}
+                        style={styles.iconContainer}
+                    >
+                        <Image
+                            source={require("../assets/youtube.png")}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleFacebookClick} style={styles.iconContainer}>
-                        <Image source={require("../assets/Facebook.png")} style={styles.icon} />
+                    <TouchableOpacity
+                        onPress={handleFacebookClick}
+                        style={styles.iconContainer}
+                    >
+                        <Image
+                            source={require("../assets/Facebook.png")}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleInstagramClick} style={styles.iconContainer}>
-                        <Image source={require("../assets/Instagram.png")} style={styles.icon} />
+                    <TouchableOpacity
+                        onPress={handleInstagramClick}
+                        style={styles.iconContainer}
+                    >
+                        <Image
+                            source={require("../assets/Instagram.png")}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.iconGroup}>
                 <Text style={styles.iconGroupText}>Location</Text>
                 <View style={styles.iconRow}>
-                    <TouchableOpacity onPress={handleWazeClick} style={styles.iconContainer}>
-                        <Image source={require("../assets/icon-waze.png")} style={styles.icon} />
+                    <TouchableOpacity
+                        onPress={handleWazeClick}
+                        style={styles.iconContainer}
+                    >
+                        <Image
+                            source={require("../assets/icon-waze.png")}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.iconGroup}>
                 <Text style={styles.iconGroupText}>Contact Info</Text>
                 <View style={styles.iconRow}>
-                    <TouchableOpacity onPress={handleEmailClick} style={styles.iconContainer}>
-                        <Image source={require("../assets/Gmail.png")} style={styles.icon} />
+                    <TouchableOpacity
+                        onPress={handleEmailClick}
+                        style={styles.iconContainer}
+                    >
+                        <Image
+                            source={require("../assets/Gmail.png")}
+                            style={styles.icon}
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handlePhoneClick} style={styles.iconContainer}>
+                    <TouchableOpacity
+                        onPress={handlePhoneClick}
+                        style={styles.iconContainer}
+                    >
                         <Image source={require("../assets/call.png")} style={styles.icon} />
                     </TouchableOpacity>
                 </View>
             </View>
             <RBSheet
-                ref={refRBSheet}
+                ref={refPhoneRBSheet}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
                 height={300}
                 openDuration={250}
                 customStyles={{
                     wrapper: {
-                        backgroundColor: "transparent"
+                        backgroundColor: "transparent",
                     },
                     container: {
                         backgroundColor: Colors.primary,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
-                    }
+                    },
                 }}
             >
                 <View style={styles.sheetContainer}>
@@ -103,7 +143,7 @@ const Footer = () => {
                         <TouchableOpacity
                             key={phoneNumber}
                             onPress={() => {
-                                refRBSheet.current.close();
+                                refPhoneRBSheet.current.close();
                                 handlePhoneSelection(phoneNumber);
                             }}
                             style={styles.phoneNumberButton}
@@ -113,6 +153,34 @@ const Footer = () => {
                     ))}
                 </View>
             </RBSheet>
+            <RBSheet
+                ref={refEmailRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={true}
+                height={200}
+                openDuration={250}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "transparent",
+                    },
+                    container: {
+                        backgroundColor: Colors.primary,
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                    },
+                }}
+            >
+                <View style={styles.sheetContainer}>
+                    <Text style={styles.modalTitle}>Contact via Email</Text>
+                    <Text style={styles.emailText}>{emailAddress}</Text>
+                    <TouchableOpacity
+                        onPress={handleEmailSelection}
+                        style={styles.emailButton}
+                    >
+                        <Text style={styles.emailButtonText}>Send an Email</Text>
+                    </TouchableOpacity>
+                </View>
+            </RBSheet>
         </View>
     );
 };
@@ -120,7 +188,6 @@ const Footer = () => {
 export default Footer;
 
 const styles = StyleSheet.create({
-
     footer: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -130,8 +197,7 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         alignItems: "center",
-        marginHorizontal: 10, // Add this to create space between icons in a group
-
+        marginHorizontal: 10,
     },
     icon: {
         width: 30,
@@ -144,36 +210,49 @@ const styles = StyleSheet.create({
     },
     iconGroupText: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         marginBottom: 10,
     },
     iconRow: {
         flexDirection: "row",
     },
-
     sheetContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         paddingHorizontal: 20,
     },
     modalTitle: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         marginBottom: 20,
-        textAlign: 'center',
+        textAlign: "center",
     },
     phoneNumberButton: {
         paddingVertical: 10,
         paddingHorizontal: 20,
         marginBottom: 10,
-        backgroundColor: '#ddd',
+        backgroundColor: "#ddd",
         borderRadius: 5,
-        width: '100%',
-        alignItems: 'center',
+        width: "100%",
+        alignItems: "center",
     },
     phoneNumberText: {
         fontSize: 16,
     },
-
+    emailText: {
+        fontSize: 16,
+        marginBottom: 20,
+    },
+    emailButton: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        backgroundColor: "#ddd",
+        borderRadius: 5,
+        width: "100%",
+        alignItems: "center",
+    },
+    emailButtonText: {
+        fontSize: 16,
+    },
 });

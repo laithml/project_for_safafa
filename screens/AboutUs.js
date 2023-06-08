@@ -1,16 +1,21 @@
 //made by ghoshehh
-import React from "react";
+import React, {useState} from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  ScrollView,
-  Dimensions,
+    Text,
+    View,
+    StyleSheet,
+    Image,
+    ScrollView,
+    Dimensions, Linking, TouchableOpacity, Modal,
 } from "react-native";
 import Colors from "../constants/Colors";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Footer from "./Footer";
+
+
 
 export default function AboutUs() {
+
   return (
     <ScrollView>
       <View style={styles.baseText}>
@@ -195,6 +200,8 @@ export default function AboutUs() {
           </View>
         </ScrollView>
       </View>
+        <Footer />
+
     </ScrollView>
   );
 }

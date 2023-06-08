@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { CourseCard } from "../components/courseCard";
 import { FlatList, StyleSheet } from "react-native";
 import { getCourses } from "../services/cousesServices";
+import Footer from "./Footer";
+
 
 export default function Courses({ navigation }) {
   const [courses, setCourses] = useState([]);
@@ -31,13 +33,16 @@ export default function Courses({ navigation }) {
   }
 
   return (
-    <FlatList
-      style={styles.coursesList}
-      contentContainerStyle={styles.coursesListContainer}
-      keyExtractor={(item) => item.id.toString()}
-      data={courses}
-      renderItem={renderCourse}
-    />
+      <>
+        <FlatList
+            style={styles.coursesList}
+            contentContainerStyle={styles.coursesListContainer}
+            keyExtractor={(item) => item.id.toString()}
+            data={courses}
+            renderItem={renderCourse}
+        />
+        <Footer />
+      </>
   );
 }
 

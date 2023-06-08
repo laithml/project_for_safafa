@@ -27,36 +27,36 @@ export default function SignUp() {
   const [errorMessagePasswordMatch, setErrorMessagePasswordMatch] =
     React.useState("");
 
-  const handleEmailBlur = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessageEmail("Invalid email address");
-    } else {
-      setErrorMessageEmail("");
+    const handleEmailBlur = () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setErrorMessageEmail("Invalid email address");
+        } else {
+            setErrorMessageEmail("");
+        }
+    };
+
+    function handleNameBlur() {
+        const nameRegex = /^[^\s]+\s[^\s]+$/; // this should match two or more words separated by spaces
+        const maxLength = 30; // maximum length of name
+
+        if (fullName.length > maxLength) {
+            // name is too long
+            setErrorMessageName("Name must be 30 characters or less.");
+        } else if (!nameRegex.test(fullName)) {
+            // name doesn't have at least two words separated by spaces
+            setErrorMessageName(
+                "Please enter just your name and your family name"
+            );
+        } else {
+            // name is valid
+            setErrorMessageName("");
+        }
     }
-  };
 
-  function handleNameBlur(e) {
-    let fullName = "";
-    if (e.target.value !== undefined) fullName = e.target.value.trim();
-    const nameRegex = /^(\S+\s)\S+$/;
-    const maxLength = 30; // maximum length of name
 
-    if (fullName.length > maxLength) {
-      // name is too long
-      setErrorMessageName("Name must be 30 characters or less.");
-    } else if (!nameRegex.test(fullName)) {
-      // name doesn't have three spaces
-      setErrorMessageName(
-        "Please enter your full name with two names, separated by spaces."
-      );
-    } else {
-      // name is valid
-      setErrorMessageName("");
-    }
-  }
 
-  const handlePhoneBlur = () => {
+    const handlePhoneBlur = () => {
     const phoneRegex = /^(050|051|052|053|054|055|058)\d{7}$/;
     if (!phoneRegex.test(phoneNumber)) {
       setErrorMessagePhone(
@@ -111,20 +111,20 @@ export default function SignUp() {
           </Text>
         </View>
         <View style={{ marginVertical: Spacing }}>
-          <TextInput
-            placeholder="Full Name"
-            onChangeText={(text) => setFullName(text)}
-            placeholderTextColor={Colors.darkText}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessageName ? "red" : Colors.gray,
-            }}
-            onBlur={handleNameBlur}
-          />
+            <TextInput
+                placeholder="Full Name"
+                onChangeText={(text) => setFullName(text)}
+                placeholderTextColor={Colors.darkText}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessageName ? "red" : Colors.gray,
+                }}
+                onBlur={handleNameBlur}
+            />
           {errorMessageName ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ color: "red", marginRight: 5 }}>

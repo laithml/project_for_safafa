@@ -5,6 +5,7 @@ import FontSize from "../constants/FontSize";
 import Font from "../constants/Font";
 import Colors from "../constants/Colors";
 import {getCourses} from "../services/cousesServices";
+import {getEvents} from "../services/eventServices";
 
 export default function AboutUs() {
     const [courses, setCourses] = useState([]);
@@ -34,6 +35,32 @@ export default function AboutUs() {
         );
     };
 
+    const [events, setEvents] = useState([]);
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const eventsData = await getEvents();
+                setEvents(eventsData);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
+    const renderEvent = ({ item }) => {
+        const capitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
+        return (
+            <View style={styles.courseContainer}>
+                <View style={[styles.backgroundImage, { backgroundImage: item.img }]} />
+                <Text style={styles.courseTitle}>{capitalizedName}</Text>
+                <Text style={styles.courseDescription}>{item.description}</Text>
+            </View>
+        );
+    };
+
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
@@ -54,6 +81,12 @@ export default function AboutUs() {
             <Carousel
                 data={courses}
                 renderItem={renderCourse}
+                sliderWidth={300}
+                itemWidth={250}
+            />
+            <Carousel
+                data={events}
+                renderItem={renderEvent}
                 sliderWidth={300}
                 itemWidth={250}
             />

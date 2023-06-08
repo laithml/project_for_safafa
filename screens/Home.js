@@ -1,89 +1,119 @@
-import React from "react";
-import {Text, View, StyleSheet, Image, ScrollView, FlatList} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet } from "react-native";
+import Carousel from "react-native-snap-carousel";
 import FontSize from "../constants/FontSize";
 import Font from "../constants/Font";
 import Colors from "../constants/Colors";
-import Spacing from "../constants/Spacing";
-import { getCourses } from "../services/cousesServices"
-import renderCourse from "./Courses"
+import {getCourses} from "../services/cousesServices";
 
 export default function AboutUs() {
+    const [courses, setCourses] = useState([]);
 
-    const data = ['Item 1', 'Item 2', 'Item 3'];
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const coursesData = await getCourses();
+                setCourses(coursesData);
+            } catch (error) {
+                console.log("Error fetching courses:", error);
+            }
+        };
 
-    // Define a rendering function
-    const renderItem = ({item}) => (
-        <View style={styles.item}>
-            <Text style={styles.text}>{item}</Text>
-        </View>
-    );
+        fetchCourses();
+    }, []);
 
-    const courses = getCourses().keys;
+    const renderCourse = ({ item }) => {
+        const capitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
 
-
+        return (
+            <View style={styles.courseContainer}>
+                <View style={[styles.backgroundImage, { backgroundImage: item.img }]} />
+                <Text style={styles.courseTitle}>{capitalizedName}</Text>
+                <Text style={styles.courseDescription}>{item.description}</Text>
+            </View>
+        );
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Welcome to</Text>
-                <Text style={styles.title}>Beit safafa Center</Text>
+                <Text style={styles.title}>Beit Safafa Center</Text>
             </View>
 
-            <View style={styles.Intro}>
-                <Text style={styles.IntroHead}>Who are we?</Text>
-                <Text style={{alignContent: 'center'}}>
-                    We're an association dedicated towards our local residents.
-                    We support local initiatives that align with the residents' needs
-                    ,we work with other town institutions to build plans to improve local services,
-                    our goal is simply to improve the quality of life through the efforts of our teams.
+            <View style={styles.intro}>
+                <Text style={styles.introHead}>Who are we?</Text>
+                <Text style={styles.introText}>
+                    We're an association dedicated to our local residents. We support local initiatives
+                    that align with the residents' needs. We work with other town institutions to
+                    build plans to improve local services. Our goal is simply to improve the quality
+                    of life through the efforts of our teams.
                 </Text>
             </View>
 
-                <View>
-                    <FlatList
-                        data={courses}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        horizontal={true} // Add this line
-                    />
-                </View>
+            <Carousel
+                data={courses}
+                renderItem={renderCourse}
+                sliderWidth={300}
+                itemWidth={250}
+            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    item: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 10, // Change marginVertical to marginHorizontal
-    },
-    text: {
-        fontSize: 20,
-        textAlign: 'center',
-    },
-    IntroHead: {
-        alignItems: 'center',
-        fontSize: FontSize.medium,
-        padding: 5,
-        margin: 5
-    },
     container: {
         flex: 1,
         paddingTop: 50,
-        alignItems: 'center',
+        alignItems: "center",
     },
     titleContainer: {
-        alignItems: 'center',
+        alignItems: "center",
     },
     title: {
         fontSize: FontSize.xLarge,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
-    Intro: {
-        width: '90%',
+    intro: {
+        width: "90%",
         borderRadius: 15,
         padding: 10,
         alignItems: "center",
-        backgroundColor: Colors.lightPrimary
-    }
+        backgroundColor: Colors.lightPrimary,
+        marginVertical: 20,
+    },
+    introHead: {
+        fontSize: FontSize.medium,
+        fontWeight: "bold",
+        padding: 5,
+        margin: 5,
+    },
+    introText: {
+        textAlign: "center",
+    },
+    courseContainer: {
+        backgroundColor: Colors.lightPrimary,
+        borderRadius: 10,
+        padding: 10,
+        marginVertical: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    backgroundImage: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        resizeMode: "cover",
+    },
+    courseTitle: {
+        fontSize: FontSize.medium,
+        fontWeight: "bold",
+        textTransform: "capitalize",
+    },
+    courseDescription: {
+        marginTop: 5,
+        textAlign: "center",
+    },
 });

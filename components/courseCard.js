@@ -4,20 +4,27 @@ import Colors from "../constants/Colors";
 
 export function CourseCard({ description, id, img, name, price, onPress }) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image style={styles.image} src={img} />
-      <View style={styles.infoContainer}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.description}>{description}</Text>
-        <View
-          style={{
-            borderBottomColor: Colors.lightPrimary,
-            borderBottomWidth: 5,
-          }}
-        />
-        <Text style={styles.price}>₪ {price}</Text>
-      </View>
-    </TouchableOpacity>
+      <TouchableOpacity style={styles.card} onPress={onPress}>
+        <Image style={styles.image} src={img} />
+        <View style={styles.infoContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.description}>{description}</Text>
+            <View
+                style={{
+                  borderBottomColor: Colors.lightPrimary,
+                  borderBottomWidth: 5,
+                }}
+            />
+          </View>
+          <View style={styles.actionsContainer}>
+            <TouchableOpacity style={styles.purchaseButton} onPress={onPress}>
+              <Text style={styles.buttonText}>Purchase</Text>
+            </TouchableOpacity>
+            <Text style={styles.price}>₪ {price}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
   );
 }
 
@@ -38,26 +45,41 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   infoContainer: {
-    flex: 1,
-    justifyContent: "space-between",
+    width: "100%",
+  },
+  textContainer: {
+    marginBottom: 8,
   },
   name: {
     fontSize: 22,
     fontWeight: "bold",
     color: Colors.text,
-    marginBottom: 8,
     textAlign: "center",
-  },
-  price: {
-    fontSize: 22,
-    marginTop: 8,
-    fontWeight: "600",
-    alignSelf: "flex-end",
+    marginBottom: 8,
   },
   description: {
     fontSize: 16,
     fontWeight: "600",
-    marginBottom: 8,
     textAlign: "center",
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  purchaseButton: {
+    backgroundColor: Colors.lightPrimary,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: Colors.text,
+  },
+  price: {
+    fontSize: 22,
+    fontWeight: "600",
   },
 });

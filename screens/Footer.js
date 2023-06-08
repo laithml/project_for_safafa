@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import {
     View,
     TouchableOpacity,
-    Modal,
     Text,
     StyleSheet,
     Image,
@@ -13,20 +12,45 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 const Footer = () => {
     const handleWazeClick = () => {
-        Linking.openURL("https://waze.com/ul/hsv9h95es0");
+        Linking.openURL("https://waze.com/ul/hsv9h95es0")
+            .then(() => {
+                console.log('Redirected to Waze.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
 
     const handleYoutubeClick = () => {
-        Linking.openURL("https://www.youtube.com/channel/UC44RVlWMlvptWUo0WmRoL9A");
+        Linking.openURL("https://www.youtube.com/channel/UC44RVlWMlvptWUo0WmRoL9A")
+            .then(() => {
+                console.log('Redirected to Youtube.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
 
     const handleFacebookClick = () => {
-        Linking.openURL("https://www.facebook.com/majlesbaitsfafa/");
+        Linking.openURL("https://www.facebook.com/majlesbaitsfafa/")
+            .then(() => {
+                console.log('Redirected to Facebook.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
 
     const handleInstagramClick = () => {
-        Linking.openURL("https://www.instagram.com/majls17");
+        Linking.openURL("https://www.instagram.com/majls17")
+            .then(() => {
+                console.log('Redirected to Instagram.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
+
 
     const emailAddress = "beitzafa@matnasim.org.il";
 
@@ -36,9 +60,14 @@ const Footer = () => {
     };
 
     const handleEmailSelection = () => {
-        Linking.openURL(`mailto:${emailAddress}`);
+        Linking.openURL(`mailto:${emailAddress}`)
+            .then(() => {
+                console.log('Redirected to Email.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
-
     const phoneNumbers = ["02-679-0717", "02-678-0894"];
 
     const refPhoneRBSheet = useRef();
@@ -49,11 +78,18 @@ const Footer = () => {
     };
 
     const handlePhoneSelection = (phoneNumber) => {
-        Linking.openURL(`tel:${phoneNumber}`);
+        Linking.openURL(`tel:${phoneNumber}`)
+            .then(() => {
+                console.log('Redirected to Phone.')
+            })
+            .catch((err) => {
+                console.error('An error occurred', err);
+            });
     };
 
     return (
         <View style={styles.footer}>
+            <View style={styles.footerContent}>
             <View style={styles.iconGroup}>
                 <Text style={styles.iconGroupText}>Social Media</Text>
                 <View style={styles.iconRow}>
@@ -181,6 +217,10 @@ const Footer = () => {
                     </TouchableOpacity>
                 </View>
             </RBSheet>
+            </View>
+            <Text style={styles.copyrightText}>
+                © {new Date().getFullYear()} ACGLM Team. All rights reserved.
+            </Text>
         </View>
     );
 };
@@ -189,11 +229,22 @@ export default Footer;
 
 const styles = StyleSheet.create({
     footer: {
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: 120,
+        backgroundColor: Colors.primary,
+    },
+    footerContent: {
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        height: 100,
-        backgroundColor: Colors.primary,
+    },
+    copyrightText: {
+        fontSize: 12,
+        color: "#fff",
+        textAlign: "center",
+        marginTop: 10,
     },
     iconContainer: {
         alignItems: "center",

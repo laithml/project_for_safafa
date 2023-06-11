@@ -12,9 +12,10 @@ router.get("/login", HomeController.login);
 
 router.get("/events", HomeController.events );
 
-
 router.get("/not-found", HomeController.notFound);
 
+
+//----------------------------------------------------------------------
 router.get("/courses", CourseController.getCourses);
 
 router.get("/courses/:id", CourseController.getCourse);
@@ -28,6 +29,16 @@ router.delete("/courses/:id", CourseController.deleteCourse);
 router.get("/students/:id", CourseController.getStudentCourses);
 
 router.get("/event", EventController.getEvents );
+
+router.post("/event", EventController.createEvent );
+
+router.get("/event/:id", EventController.getEvent );
+
+router.put("/event/:id", EventController.updateEvent);
+
+router.delete("/event/:id", EventController.deleteEvent);
+
+
 
 router.get("*", (req, res) => {
     res.redirect("/not-found");

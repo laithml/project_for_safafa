@@ -4,7 +4,7 @@ const e = require("express");
 
 
 // Get all courses
-exports.getCourses = (req,res) => {
+exports.getCourses = (req, res) => {
     const refCourses = collection(db, "Courses");
     // Create an empty array to store the courses
     let coursesList = [];
@@ -18,9 +18,8 @@ exports.getCourses = (req,res) => {
 }
 
 
-
 // Get a single course
-exports.getCourse = (req,res) => {
+exports.getCourse = (req, res) => {
     const refCourse = doc(db, "Courses", req.params.id);
     getDoc(refCourse).then((doc) => {
         if (doc.exists()) {
@@ -32,15 +31,27 @@ exports.getCourse = (req,res) => {
 }
 
 // Create a new course
-exports.createCourse = (req,res) => {
-    const refCourse = doc(db, "Courses", req.body.id);
-    setDoc(refCourse, req.body).then(() => {
+exports.createCourse = (req, res) => {
+    console.log(req.body);
+    //generate id for the data
+    //TODO : EXITS COURSE !!!
+    const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const data = {
+        id: id,
+        name: req.body.name,
+        img: req.body.img,
+        price: req.body.price,
+        description: req.body.description,
+    }
+    console.log(data);
+    const refCourse = doc(db, "Courses", data.id);
+    setDoc(refCourse, data).then(() => {
         res.status(201).send({message: "Course created successfully"});
     });
 }
 
 // Update a course
-exports.updateCourse = (req,res) => {
+exports.updateCourse = (req, res) => {
     const refCourse = doc(db, "Courses", req.params.id);
     updateDoc(refCourse, req.body).then(() => {
         res.status(200).send({message: "Course updated successfully"});
@@ -48,7 +59,7 @@ exports.updateCourse = (req,res) => {
 }
 
 // Delete a course
-exports.deleteCourse = (req,res) => {
+exports.deleteCourse = (req, res) => {
     const refCourse = doc(db, "Courses", req.params.id);
     deleteDoc(refCourse).then(() => {
         res.status(200).send({message: "Course deleted successfully"});
@@ -56,13 +67,30 @@ exports.deleteCourse = (req,res) => {
 }
 
 // Get Student's courses
-exports.getStudentCourses = (req,res) => {
-    const refStudent = doc(db, "Students", req.params.id);
-    getDoc(refStudent).then((doc) => {
-        if (doc.exists()) {
-            res.status(200).send(doc.data().courses);
-        } else {
-            res.status(404).send({message: "Student not found"});
-        }
+exports.getStudentCourses = (req, res) => {
+    console.log("getStudentCourses");
+    const courseId = req.params.id;
+    //get the students ids from courses students array get the id of them and go t retrieve the student data
+    const refCourse = doc(db, "Courses", courseId);
+    getDoc(refCourse).then((docCourse) => {
+        //pass on the students array and for each element get the students data
+        let studentsList = docCourse.data().students;
+        let studentsDataPromises = Object.values(studentsList).map((student) => {
+            //remove the spaces from the student id
+            const trimmedStudent = student.trim();
+            let refStudent = doc(db, "users", trimmedStudent);
+            return getDoc(refStudent).then((studentsDoc) => {
+                return studentsDoc.data();
+            });
+        });
+
+        Promise.all(studentsDataPromises)
+            .then((studentsData) => {
+                res.status(200).send(studentsData);
+            })
+            .catch((error) => {
+                res.status(500).send("Error occurred while fetching student data");
+            });
     });
-}
+};
+

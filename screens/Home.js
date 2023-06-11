@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import React, {useEffect, useState} from "react";
+import {Text, View, StyleSheet, TouchableOpacity, ScrollView} from "react-native";
 import Carousel from "react-native-snap-carousel";
 import FontSize from "../constants/FontSize";
 import Font from "../constants/Font";
@@ -7,8 +7,10 @@ import Colors from "../constants/Colors";
 import {getCourses} from "../services/cousesServices";
 import {getEvents} from "../services/eventServices";
 
-export default function AboutUs() {
-    const [courses, setCourses] = useState([]);
+export default function AboutUs({navigation}) {
+    let [courses, setCourses] = useState([]);
+    let [events, setEvents] = useState([]);
+
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -20,23 +22,6 @@ export default function AboutUs() {
             }
         };
 
-        fetchCourses();
-    }, []);
-
-    const renderCourse = ({ item }) => {
-        const capitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
-
-        return (
-            <View style={styles.courseContainer}>
-                <View style={[styles.backgroundImage, { backgroundImage: item.img }]} />
-                <Text style={styles.courseTitle}>{capitalizedName}</Text>
-                <Text style={styles.courseDescription}>{item.description}</Text>
-            </View>
-        );
-    };
-
-    const [events, setEvents] = useState([]);
-    useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const eventsData = await getEvents();
@@ -46,22 +31,59 @@ export default function AboutUs() {
             }
         };
 
+        fetchCourses();
         fetchEvents();
     }, []);
+    courses = courses.splice(0, 3);
+    events = events.splice(0, 3);
+    const renderCourse = ({item}) => {
+        if (!item.name) {
+            return null;
+        }
 
-    const renderEvent = ({ item }) => {
         const capitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
+        if (item.isButton) {
+            return (
+                <TouchableOpacity style={styles.buttonItem} onPress={() => navigation.navigate("CoursesScreen")}>
+                    <Text style={styles.buttonText}>Go to Other Page</Text>
+                </TouchableOpacity>
+            );
+        }
         return (
             <View style={styles.courseContainer}>
-                <View style={[styles.backgroundImage, { backgroundImage: item.img }]} />
+                <View style={[styles.backgroundImage, {backgroundImage: item.img}]}/>
                 <Text style={styles.courseTitle}>{capitalizedName}</Text>
                 <Text style={styles.courseDescription}>{item.description}</Text>
             </View>
         );
     };
 
+    const renderEvent = ({item}) => {
+        if (!item.name) {
+            return null;
+        }
 
+        const capitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
+        if (item.isButton) {
+            return (
+                <TouchableOpacity style={styles.buttonItem} onPress={() => navigation.navigate("EventsScreen")}>
+                    <Text style={styles.buttonText}>Go to Other Page</Text>
+                </TouchableOpacity>
+            );
+        }
+        return (
+            <View style={styles.courseContainer}>
+                <View style={[styles.backgroundImage, {backgroundImage: item.img}]}/>
+                <Text style={styles.courseTitle}>{capitalizedName}</Text>
+                <Text style={styles.courseDescription}>{item.description}</Text>
+            </View>
+        );
+    };
+
+    const coursesData = [...courses, {isButton: true}];
+    const eventsData = [...events, {isButton: true}];
     return (
+        <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <Text style={styles.title}>Welcome to</Text>
@@ -77,24 +99,40 @@ export default function AboutUs() {
                     of life through the efforts of our teams.
                 </Text>
             </View>
+            <View style={styles.Scrollers}>
+                <Text style={styles.introHead}>Our latest Courses!</Text>
 
-            <Carousel
-                data={courses}
-                renderItem={renderCourse}
-                sliderWidth={300}
-                itemWidth={250}
-            />
-            <Carousel
-                data={events}
-                renderItem={renderEvent}
-                sliderWidth={300}
-                itemWidth={250}
-            />
+                <Carousel
+                    data={coursesData}
+                    renderItem={renderCourse}
+                    sliderWidth={300}
+                    itemWidth={250}
+                    scrollEnabled={courses.length > 0} // Enable scrolling only when there are courses
+                />
+            </View>
+            <View style={styles.Scrollers}>
+                <Text style={styles.introHead}>Our latest Events!</Text>
+
+                <Carousel
+                    data={eventsData}
+                    renderItem={renderEvent}
+                    sliderWidth={300}
+                    itemWidth={250}
+                    scrollEnabled={events.length > 0} // Enable scrolling only when there are events
+                />
+            </View>
         </View>
+        </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    Scrollers: {
+        height:200,
+        backgroundColor: Colors.lightPrimary,
+        padding: 10,
+        marginVertical: 10,
+    },
     container: {
         flex: 1,
         paddingTop: 50,
@@ -132,14 +170,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    backgroundImage: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        resizeMode: "cover",
-    },
+    // backgroundImage: {
+    //     position: "absolute",
+    //     top: 0,
+    //     left: 0,
+    //     right: 0,
+    //     bottom: 0,
+    //     resizeMode: "cover",
+    // },
     courseTitle: {
         fontSize: FontSize.medium,
         fontWeight: "bold",
@@ -148,5 +186,17 @@ const styles = StyleSheet.create({
     courseDescription: {
         marginTop: 5,
         textAlign: "center",
+    },
+    buttonItem: {
+        backgroundColor: Colors.primary,
+        borderRadius: 10,
+        padding: 10,
+        marginVertical: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    buttonText: {
+        fontSize: FontSize.medium,
+        fontWeight: "bold",
     },
 });

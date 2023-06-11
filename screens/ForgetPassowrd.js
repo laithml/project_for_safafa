@@ -13,8 +13,6 @@ export default function FP() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
 
-  //TODO : Add validation for the inputs
-
   return (
     <SafeAreaView>
       <View style={{ padding: Spacing * 2 }}>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CourseCard } from "../components/courseCard";
 import { FlatList, StyleSheet } from "react-native";
 import { getCourses } from "../services/cousesServices";
-
+import Footer from "./Footer";
 export default function Courses({ navigation }) {
   const [courses, setCourses] = useState([]);
 
@@ -20,24 +20,20 @@ export default function Courses({ navigation }) {
   }, []);
 
   function renderCourse({ item: course }) {
-    return (
-      <CourseCard
-        {...course}
-        onPress={() => {
-          navigation.navigate("Events", { courseID: course.id });
-        }}
-      />
-    );
+    return <CourseCard {...course} />;
   }
 
   return (
-    <FlatList
-      style={styles.coursesList}
-      contentContainerStyle={styles.coursesListContainer}
-      keyExtractor={(item) => item.id.toString()}
-      data={courses}
-      renderItem={renderCourse}
-    />
+    <>
+      <FlatList
+        style={styles.coursesList}
+        contentContainerStyle={styles.coursesListContainer}
+        keyExtractor={(item) => item.id.toString()}
+        data={courses}
+        renderItem={renderCourse}
+      />
+      <Footer />
+    </>
   );
 }
 

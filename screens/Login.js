@@ -23,14 +23,12 @@ export default function Login() {
               fontSize: FontSize.xLarge,
               color: Colors.primary,
               marginVertical: Spacing * 3,
-              FontFamily: Font["poppins-semiBold"],
             }}
           >
             Login Here
           </Text>
           <Text
             style={{
-              FontFamily: Font["poppins-semiBold"],
               fontSize: FontSize.large,
               maxWidth: "60%",
               textAlign: "center",
@@ -77,7 +75,6 @@ export default function Login() {
           >
             <Text
               style={{
-                FontFamily: Font["poppins-semiBold"],
                 fontSize: FontSize.small,
                 color: Colors.primary,
               }}

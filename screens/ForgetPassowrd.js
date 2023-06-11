@@ -13,8 +13,6 @@ export default function FP() {
   const navigation = useNavigation();
   const [email, setEmail] = React.useState("");
 
-  //TODO : Add validation for the inputs
-
   return (
     <SafeAreaView>
       <View style={{ padding: Spacing * 2 }}>
@@ -24,7 +22,6 @@ export default function FP() {
               fontSize: FontSize.xLarge,
               color: Colors.primary,
               marginVertical: Spacing * 3,
-              FontFamily: Font["poppins-semiBold"],
               textAlign: "center",
             }}
           >
@@ -32,7 +29,6 @@ export default function FP() {
           </Text>
           <Text
             style={{
-              FontFamily: Font["poppins-semiBold"],
               fontSize: FontSize.medium,
               maxWidth: "60%",
               textAlign: "center",

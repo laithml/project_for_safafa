@@ -28,16 +28,19 @@ export const SignUpFireBase = (email, password, fullName, phoneNumber) => {
   return false;
 };
 
-export const LoginFireBase = () => {
+export const LoginFireBase = (email, password) => {
+  //TODO: SYNC WITH FIREBASE
+  let loggedIn = false;
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      return true;
+      console.log("success");
+      loggedIn = true;
     })
     .catch((error) => {
       console.log(error);
-      return false;
+      loggedIn = false;
     });
-  return false;
+  return true;
 };
 
 export const forgetPasswordHandler = () => {

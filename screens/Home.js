@@ -101,7 +101,6 @@ export default function AboutUs({navigation}) {
             </View>
             <View style={styles.Scrollers}>
                 <Text style={styles.introHead}>Our latest Courses!</Text>
-
                 <Carousel
                     data={coursesData}
                     renderItem={renderCourse}
@@ -112,7 +111,6 @@ export default function AboutUs({navigation}) {
             </View>
             <View style={styles.Scrollers}>
                 <Text style={styles.introHead}>Our latest Events!</Text>
-
                 <Carousel
                     data={eventsData}
                     renderItem={renderEvent}
@@ -132,6 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.lightPrimary,
         padding: 10,
         marginVertical: 10,
+        borderRadius: 15,
     },
     container: {
         flex: 1,
@@ -170,14 +169,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    // backgroundImage: {
-    //     position: "absolute",
-    //     top: 0,
-    //     left: 0,
-    //     right: 0,
-    //     bottom: 0,
-    //     resizeMode: "cover",
-    // },
+    backgroundImage: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        resizeMode: "cover",
+    },
     courseTitle: {
         fontSize: FontSize.medium,
         fontWeight: "bold",

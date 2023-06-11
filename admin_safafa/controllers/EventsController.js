@@ -49,9 +49,9 @@ exports.createEvent = (req,res) => {
 
 // Update a event
 exports.updateEvent = (req,res) => {
-    const refEvent = doc(db, "events", req.params.id);
+    const refEvent = doc(db, "events", req.params.id)
     updateDoc(refEvent, req.body).then(() => {
-        res.status(200).send({message: "Event updated successfully"});
+        res.status(200).send("Course updated successfully");
     });
 }
 

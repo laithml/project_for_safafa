@@ -1,9 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CourseCard } from "../components/courseCard";
 import { FlatList, StyleSheet } from "react-native";
 import { getCourses } from "../services/cousesServices";
 
 export default function Courses({ navigation }) {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const coursesData = await getCourses();
+        setCourses(coursesData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   function renderCourse({ item: course }) {
     return (
       <CourseCard
@@ -14,8 +29,6 @@ export default function Courses({ navigation }) {
       />
     );
   }
-
-  const [courses, setCourses] = React.useState(getCourses);
 
   return (
     <FlatList
@@ -34,7 +47,7 @@ const styles = StyleSheet.create({
   },
   coursesListContainer: {
     backgroundColor: "#eeeeee",
-    paddingVertical: 8,
-    marginHorizontal: 8,
+    paddingVertical: 16,
+    marginHorizontal: 16,
   },
 });

@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { Text, Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import Colors from "../constants/Colors";
+import { auth } from "../config/firebase";
+import Payment from "../screens/Payment";
+
 
 export function CourseCard({ description, id, img, name, price, onPress }) {
+  const [user, setUser] = useState(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      setUser(userAuth);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handlePress = () => {
+    if (user) {
+      navigation.navigate("Payment", { courseId: id, courseName: name, coursePrice: price });
+    } else {
+      navigation.navigate("Login");
+    }
+  };
+
+
+
   return (
-      <TouchableOpacity style={styles.card} onPress={onPress}>
+      <TouchableOpacity style={styles.card} onPress={handlePress}>
         <Image style={styles.image} src={img} />
         <View style={styles.infoContainer}>
           <View style={styles.textContainer}>
@@ -18,7 +43,7 @@ export function CourseCard({ description, id, img, name, price, onPress }) {
             />
           </View>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity style={styles.purchaseButton} onPress={onPress}>
+            <TouchableOpacity style={styles.purchaseButton} onPress={handlePress}>
               <Text style={styles.buttonText}>Purchase</Text>
             </TouchableOpacity>
             <Text style={styles.price}>₪ {price}</Text>

@@ -6,7 +6,7 @@ export function EventCard({ name, description, img, onPress }) {
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => setModalVisible(!modalVisible);
 
-  const [ ,setIsScrollable] = useState(false);
+  const [isScrollable, setIsScrollable] = useState(false);
   const [layoutHeight, setLayoutHeight] = useState(0);
 
   const handleScroll = (event) => {

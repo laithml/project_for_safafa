@@ -4,7 +4,6 @@ import { getEvents } from "../services/eventServices";
 import { EventCard } from "../components/eventCard";
 import Footer from "./Footer";
 
-
 export default function Events({ navigation }) {
   const [events, setEvents] = useState([]);
 
@@ -33,16 +32,16 @@ export default function Events({ navigation }) {
   }
 
   return (
-      <>
-        <FlatList
-            style={styles.EventsList}
-            contentContainerStyle={styles.EventListContainer}
-            keyExtractor={(item) => item.id.toString()}
-            data={events}
-            renderItem={renderEvent}
-        />
-        <Footer />
-      </>
+    <>
+      <FlatList
+        style={styles.EventsList}
+        contentContainerStyle={styles.EventListContainer}
+        keyExtractor={(item) => item.id.toString()}
+        data={events}
+        renderItem={renderEvent}
+      />
+      <Footer />
+    </>
   );
 }
 
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
   },
   EventListContainer: {
     backgroundColor: "#eeeeee",
-    paddingVertical: 8,
-    marginHorizontal: 8,
+    paddingVertical: 16,
+    marginHorizontal: 16,
   },
 });

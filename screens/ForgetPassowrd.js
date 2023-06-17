@@ -24,7 +24,6 @@ export default function FP() {
               fontSize: FontSize.xLarge,
               color: Colors.primary,
               marginVertical: Spacing * 3,
-              FontFamily: Font["poppins-semiBold"],
               textAlign: "center",
             }}
           >
@@ -32,7 +31,6 @@ export default function FP() {
           </Text>
           <Text
             style={{
-              FontFamily: Font["poppins-semiBold"],
               fontSize: FontSize.medium,
               maxWidth: "60%",
               textAlign: "center",

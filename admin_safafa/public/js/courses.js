@@ -1,13 +1,15 @@
 $(document).ready(() => {
+
+//jj
     let coursesTable = $("#courses").DataTable({
         data: [],
         columns: [
-            { data: "id" },
-            { data: "name" },
-            { data: "image" },
-            { data: "price" },
-            { data: "description" },
-            { data: "manage" },
+            {data: "id"},
+            {data: "name"},
+            {data: "image"},
+            {data: "price"},
+            {data: "description"},
+            {data: "manage"},
         ],
     });
 
@@ -39,10 +41,72 @@ $(document).ready(() => {
         })
         .catch((error) => console.error(error));
 
-    $(document).on("click", ".list", function () {// still not done
+    $(document).on("click", ".list", function () {
         let id = $(this).data("id");
-        window.location.href = "/courses/" + id;
+        fetch("/students/" + id)
+            .then((res) => res.json())
+            .then((data) => {
+                // Create the HTML content for the student details
+                let tableContent = `
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+                data.forEach((student) => {
+                    tableContent += `
+                    <tr>
+                        <td>${student.fullName}</td>
+                        <td>${student.email}</td>
+                        <td>${student.phoneNumber}</td>
+                    </tr>
+                `;
+                });
+                tableContent += `
+                    </tbody>
+                </table>
+            `;
+
+                // Create the modal pop-up window
+                let modalHtml = `
+                <div id="studentModal" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Student Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ${tableContent}
+                            </div>
+                            <div class="modal-footer"> <!-- Added modal footer -->
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                // Append the modal HTML to the body
+                $("body").append(modalHtml);
+
+                // Show the modal
+                $("#studentModal").modal("show");
+
+                // Remove the modal from the DOM when it's hidden
+                $("#studentModal").on("hidden.bs.modal", function () {
+                    $(this).remove();
+                });
+            })
+            .catch((error) => console.error(error));
     });
+
 
     $(document).on("click", ".edit", function () {
         let id = $(this).data("id");
@@ -141,24 +205,24 @@ var btn = document.getElementById("createCourseBtn");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
-btn.onclick = function() {
+btn.onclick = function () {
     modal.style.display = "block";
 }
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = function () {
     modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
 
 // Handle form submission
-document.getElementById("submit").addEventListener("click", function(event) {
+document.getElementById("submit").addEventListener("click", function (event) {
     event.preventDefault(); // Prevent form submission
 
     // Retrieve the input values
@@ -174,27 +238,27 @@ document.getElementById("submit").addEventListener("click", function(event) {
         price: coursePrice,
         description: courseDescription
     };
-        fetch("/courses", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(courseData)
-        })
-            .then(function(response) {
-                if (response.ok) {
+    fetch("/courses", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(courseData)
+    })
+        .then(function (response) {
+            if (response.ok) {
 
-                    // Hide the modal
-                    var modal = document.getElementById("createCourseModal");
-                    modal.style.display = "none";
-                    window.location.reload();
-                    // Do something with the response from the server if needed
-                    console.log(response.json());
-                }
-            })
-            .catch(function(error) {
-                console.error("Error:", error);
-            });
-    });
+                // Hide the modal
+                var modal = document.getElementById("createCourseModal");
+                modal.style.display = "none";
+                window.location.reload();
+                // Do something with the response from the server if needed
+                console.log(response.json());
+            }
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+        });
+});
 
 

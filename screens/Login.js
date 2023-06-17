@@ -1,5 +1,5 @@
-import React, {useContext} from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import React, { useContext, useState } from "react";
+import { Text, View, TouchableOpacity, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-gesture-handler";
 import FontSize from "../constants/FontSize";
@@ -7,24 +7,26 @@ import Colors from "../constants/Colors";
 import Spacing from "../constants/Spacing";
 import { useNavigation } from "@react-navigation/native";
 import { LoginFireBase } from "../services/auth";
-import { UserContext } from '../context/UserContext'; // import UserContext
+import { UserContext } from '../context/UserContext';
 import { getDoc, doc } from 'firebase/firestore';
 import { auth, db } from "../config/firebase";
 
 export default function Login() {
     const navigation = useNavigation();
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const { setUser } = useContext(UserContext); // get setUser function from UserContext
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const { setUser } = useContext(UserContext);
 
     const handleLogin = async () => {
+        setIsLoading(true);
         const user = await LoginFireBase(email, password);
         if (user) {
             const userRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(userRef);
 
             if (docSnap.exists()) {
-                setUser({ fullName: docSnap.data().fullName });
+                setUser(docSnap.data());
                 navigation.navigate("Home");
             } else {
                 console.log('No such document!');
@@ -32,6 +34,7 @@ export default function Login() {
         } else {
             console.log("Login failed");
         }
+        setIsLoading(false);
     };
 
     return (
@@ -54,7 +57,7 @@ export default function Login() {
                             textAlign: "center",
                         }}
                     >
-                        Welcome back you've been missed!
+                        Welcome back! You've been missed!
                     </Text>
                 </View>
                 <View style={{ marginVertical: Spacing * 3 }}>
@@ -119,15 +122,19 @@ export default function Login() {
                         shadowRadius: Spacing,
                     }}
                 >
-                    <Text
-                        style={{
-                            color: Colors.onPrimary,
-                            textAlign: "center",
-                            fontSize: FontSize.large,
-                        }}
-                    >
-                        Sign In
-                    </Text>
+                    {isLoading ? (
+                        <ActivityIndicator color={Colors.onPrimary} />
+                    ) : (
+                        <Text
+                            style={{
+                                color: Colors.onPrimary,
+                                textAlign: "center",
+                                fontSize: FontSize.large,
+                            }}
+                        >
+                            Sign In
+                        </Text>
+                    )}
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => navigation.navigate("SignUp")}

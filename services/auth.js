@@ -12,6 +12,7 @@ export const SignUpFireBase = async (email, password, fullName, phoneNumber) => 
         console.log(userCredential);
         const userRef = doc(db, "users", userCredential.user.uid);
         const userDetails = {
+            id: userCredential.user.uid,
             fullName: fullName,
             email: email,
             phoneNumber: phoneNumber,

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-
 import {
     ScrollView,
     Text,
@@ -7,8 +6,12 @@ import {
     View,
     TextInput,
     Dimensions,
-    StyleSheet, Platform,
+    StyleSheet,
+    Platform,
+    ActivityIndicator,
 } from "react-native";
+import { getDoc,updateDoc, doc,arrayUnion } from 'firebase/firestore';
+import { auth, db } from "../config/firebase";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
@@ -24,14 +27,16 @@ export default function Payment({ route, navigation }) {
 
     const [courseName, setCourseName] = useState("");
     const [coursePrice, setCoursePrice] = useState(0);
+    const [course, setCourse] = useState(0);
 
     useEffect(() => {
         (async () => {
             const courses = await getCourses();
-            const course = courses.find(course => course.id === courseId);
+            const course = courses.find((course) => course.id === courseId);
             if (course) {
                 setCourseName(course.name);
                 setCoursePrice(course.price); // assuming the price field in Firestore is named "price"
+                setCourse(course);
             }
         })();
     }, [courseId]);
@@ -46,15 +51,40 @@ export default function Payment({ route, navigation }) {
     const [nameOnCard, setNameOnCard] = useState("");
     const [id, setId] = useState("");
     const [cardNumber, setCardNumber] = useState("");
-    const [expirationDate, setExpirationDate] = useState(new Date());
+    const [expirationDate, setExpirationDate] = useState("");
     const [cvv, setCvv] = useState("");
     const [isDateSelected, setIsDateSelected] = useState(false);
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
+    const [isLoading, setIsLoading] = useState(false); // Track loading state
+
     const refRBSheet = useRef();
 
     const handlePurchase = () => {
-        // Process the payment here
+        if (!id || !nameOnCard || !cvv || !cardNumber || !expirationDate) {
+            alert("Please fill all required fields");
+            return;
+        }
+
+        setIsLoading(true);
+
+        // Simulate an asynchronous purchase process
+        setTimeout(() => {
+            setIsLoading(false);
+            // Perform the actual purchase logic here
+            // ...
+        }, 2000);
+
+        const docRef = doc(db, "Courses", course.id);
+        const studentsArrayUnion = arrayUnion(user.id);
+
+        updateDoc(docRef, { students: studentsArrayUnion })
+            .then(() => {
+                console.log("A new student has been added to the course successfully");
+            })
+            .catch((error) => {
+                console.log("Error adding student to the course:", error);
+            });
     };
 
     const handleMonthChange = (value) => {
@@ -73,10 +103,9 @@ export default function Payment({ route, navigation }) {
     const currentYear = new Date().getFullYear();
 
     const monthItems = Array.from({ length: 12 }, (_, i) => ({
-        label: `${String(i + 1).padStart(2, '0')}`,
-        value: `${String(i + 1).padStart(2, '0')}`,
+        label: `${String(i + 1).padStart(2, "0")}`,
+        value: `${String(i + 1).padStart(2, "0")}`,
     }));
-
 
     const yearItems = Array.from({ length: 50 }, (_, i) => ({
         label: `${currentYear + i}`,
@@ -106,7 +135,14 @@ export default function Payment({ route, navigation }) {
                         Please enter your payment details to complete the purchase of the
                         course.
                     </Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: Spacing }}>
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginVertical: Spacing,
+                        }}
+                    >
                         <Text
                             style={{
                                 fontSize: FontSize.medium,
@@ -119,13 +155,12 @@ export default function Payment({ route, navigation }) {
                             style={{
                                 fontSize: FontSize.medium,
                                 fontWeight: "bold",
-                                marginLeft: Spacing * 2,  // Increase the space here
+                                marginLeft: Spacing * 2,
                             }}
                         >
                             Price: ₪{coursePrice}
                         </Text>
                     </View>
-
                 </View>
 
                 <View style={{ marginVertical: Spacing }}>
@@ -138,21 +173,21 @@ export default function Payment({ route, navigation }) {
                         placeholder="ID"
                         onChangeText={(text) => setId(text)}
                         style={componentStyles.input}
+                        keyboardType="numeric"
                     />
                     <TextInput
                         placeholder="Card Number"
                         onChangeText={(text) => setCardNumber(text)}
                         style={componentStyles.input}
+                        keyboardType="numeric"
                     />
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <TouchableOpacity
-                            style={componentStyles.dateButton}
-                            onPress={() => refRBSheet.current.open()}
-                        >
-                            <Text style={componentStyles.dateButtonText}>
-                                {isDateSelected ? `${month}/${year}` : "Expiration Date"}
-                            </Text>
-                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="Expiration date"
+                            onChangeText={(text) => setExpirationDate(text)}
+                            style={componentStyles.input}
+                        />
+
                         <RBSheet
                             ref={refRBSheet}
                             closeOnDragDown={true}
@@ -204,15 +239,21 @@ export default function Payment({ route, navigation }) {
                             placeholder="CVV"
                             onChangeText={(text) => setCvv(text)}
                             style={componentStyles.cvvInput}
+                            keyboardType={"numeric"}
                         />
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <TouchableOpacity
                         onPress={handlePurchase}
                         style={componentStyles.purchaseButton}
+                        disabled={isLoading} // Disable the button when loading
                     >
-                        <Text style={componentStyles.buttonText}>Purchase</Text>
+                        {isLoading ? (
+                            <ActivityIndicator color={Colors.onPrimary} />
+                        ) : (
+                            <Text style={componentStyles.buttonText}>Purchase</Text>
+                        )}
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => navigation.goBack()}
@@ -251,8 +292,8 @@ const componentStyles = StyleSheet.create({
     sheetContainer: {
         flex: 1,
         padding: Spacing,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
     },
     modalTitle: {
         fontWeight: "bold",
@@ -261,10 +302,10 @@ const componentStyles = StyleSheet.create({
         color: Colors.onPrimary,
     },
     pickerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        width: '100%',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        width: "100%",
         marginVertical: Spacing,
     },
     pickerInput: {
@@ -280,12 +321,12 @@ const componentStyles = StyleSheet.create({
         inputIOS: {
             fontSize: FontSize.medium,
             fontWeight: "bold",
-            color: Colors.gray, // change the color to white
+            color: Colors.gray,
         },
         inputAndroid: {
             fontSize: FontSize.medium,
             fontWeight: "bold",
-            color: Colors.gray, // change the color to white
+            color: Colors.gray,
         },
         placeholder: {
             fontSize: FontSize.medium,
@@ -294,13 +335,13 @@ const componentStyles = StyleSheet.create({
         },
     },
     doneButton: {
-        width: '80%',
+        width: "80%",
         paddingVertical: Spacing,
         paddingHorizontal: Spacing * 2,
         backgroundColor: Colors.onPrimary,
         borderRadius: Spacing,
         alignItems: "center",
-        justifyContent: 'center',
+        justifyContent: "center",
         marginTop: Spacing * 2,
     },
     doneButtonText: {
@@ -329,7 +370,7 @@ const componentStyles = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: Spacing,
-        width: '45%',
+        width: "45%",
     },
     cancelButton: {
         padding: Spacing * 2,
@@ -343,11 +384,12 @@ const componentStyles = StyleSheet.create({
         },
         shadowOpacity: 0.3,
         shadowRadius: Spacing,
-        width: '45%',
+        width: "45%",
     },
     buttonText: {
         color: Colors.onPrimary,
         textAlign: "center",
-        fontSize: FontSize.large,
+        fontSize: FontSize.medium,
+        fontWeight: "bold",
     },
 });

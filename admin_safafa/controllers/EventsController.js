@@ -31,8 +31,18 @@ exports.getEvent = (req,res) => {
 
 // Create a new event
 exports.createEvent = (req,res) => {
-    const refEvent = doc(db, "events", req.body.id);
-    setDoc(refEvent, req.body).then(() => {
+    console.log("create event" );
+    //generate id
+    const id= Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const data = {
+        id: id,
+        name: req.body.name,
+        img: req.body.img,
+        description: req.body.description
+    }
+    const refEvent = doc(db, "events",id );
+    console.log(req.body);
+    setDoc(refEvent, data).then(() => {
         res.status(201).send({message: "Event created successfully"});
     });
 }

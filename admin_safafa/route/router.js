@@ -30,7 +30,15 @@ router.get("/students/:id", CourseController.getStudentCourses);
 
 router.get("/event", EventController.getEvents );
 
+router.post("/event", EventController.createEvent );
+
+router.get("/event/:id", EventController.getEvent );
+
 router.put("/event/:id", EventController.updateEvent);
+
+router.delete("/event/:id", EventController.deleteEvent);
+
+
 
 router.get("*", (req, res) => {
     res.redirect("/not-found");

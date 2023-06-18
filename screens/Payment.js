@@ -82,6 +82,7 @@ export default function Payment({ route, navigation }) {
         .catch((error) => {
           console.log("Error adding student to the course:", error);
         });
+      alert("Payment successful");
       navigation.navigate("Courses");
     }, 2000);
   };

@@ -1,3 +1,4 @@
+//TODO: AGE, Gender, Capacity, NOTIFICATIONS, profile,
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,

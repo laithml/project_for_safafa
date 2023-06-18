@@ -39,11 +39,13 @@ export default function AboutUs() {
       name: "John Doe",
       title: "CEO",
       image:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?cs=srgb&dl=pexels-pixabay-220453.jpg&fm=jpg",
+        "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-260nw-1714666150.jpg",
     },
     {
       name: "Jane Smith",
       title: "CFO",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGw3RtValAUS9swRhHBx1pqlzp4H6nn5OUAg&usqp=CAU",
     },
     // Add more staff members as needed
   ];
@@ -88,7 +90,7 @@ export default function AboutUs() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.baseText}>
-          <Text style={styles.titleText}>Beit Safafa Organization</Text>
+          <Text style={styles.titleText}>Beit Safafa Center</Text>
           <Carousel
             data={carouselItems}
             renderItem={renderItem}
@@ -96,6 +98,7 @@ export default function AboutUs() {
             itemWidth={Dimensions.get("window").width * 0.8}
             layout="default"
           />
+          <Text style={styles.titleText}>Our Staff</Text>
           <Carousel
             data={staffMembers}
             renderItem={({ item }) => (
@@ -201,6 +204,7 @@ const styles = StyleSheet.create({
   },
   popupContainer: {
     flex: 1,
+    marginTop: 90,
     backgroundColor: "rgba(211, 211, 211,0.9)",
     justifyContent: "center",
     alignItems: "center",
@@ -216,6 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 30, // Adjust the line height here
     textAlign: "center",
+    margin: 16,
   },
   closeButton: {
     backgroundColor: Colors.primary,

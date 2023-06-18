@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import {Text, Image, View, StyleSheet, TouchableOpacity, Modal, ImageBackground, ScrollView} from "react-native";
+import {
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import Colors from "../constants/Colors";
 
 export function EventCard({ name, description, img, onPress }) {
@@ -20,54 +29,48 @@ export function EventCard({ name, description, img, onPress }) {
   };
 
   return (
-      <View>
-        <TouchableOpacity style={styles.card} onPress={toggleModal}>
-          <Image style={styles.image} source={{ uri: img }} />
-          <View style={styles.infoContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.name}>{name}</Text>
-            </View>
-            <View style={styles.line} />
+    <View>
+      <TouchableOpacity style={styles.card} onPress={toggleModal}>
+        <Image style={styles.image} source={{ uri: img }} />
+        <View style={styles.infoContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.name}>{name}</Text>
+          </View>
+          <View style={styles.line} />
+          <TouchableOpacity style={styles.readButton} onPress={toggleModal}>
+            <Text style={styles.readButtonText}>Read about the event</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={toggleModal}
+      >
+        <View style={styles.centeredView}>
+          <ImageBackground style={styles.modalView} source={{ uri: img }}>
+            <View style={styles.overlay} />
+            <ScrollView
+              contentContainerStyle={styles.scrollView}
+              onScroll={handleScroll}
+              onLayout={handleLayout}
+              scrollEventThrottle={400}
+            >
+              <Text style={styles.modalTextLarge}>{description}</Text>
+            </ScrollView>
+
             <TouchableOpacity
-                style={styles.readButton}
-                onPress={toggleModal}
+              style={{ ...styles.openButton, backgroundColor: Colors.primary }}
+              onPress={toggleModal}
             >
-              <Text style={styles.readButtonText}>Read about the event</Text>
+              <Text style={styles.textStyle}>Close</Text>
             </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={toggleModal}
-        >
-          <View style={styles.centeredView}>
-            <ImageBackground
-                style={styles.modalView}
-                source={{ uri: img }}
-            >
-              <View style={styles.overlay} />
-              <ScrollView
-                  contentContainerStyle={styles.scrollView}
-                  onScroll={handleScroll}
-                  onLayout={handleLayout}
-                  scrollEventThrottle={400}
-              >
-                <Text style={styles.modalTextLarge}>{description}</Text>
-              </ScrollView>
-
-              <TouchableOpacity
-                  style={{ ...styles.openButton, backgroundColor: Colors.primary }}
-                  onPress={toggleModal}
-              >
-                <Text style={styles.textStyle}>Close</Text>
-              </TouchableOpacity>
-            </ImageBackground>
-          </View>
-        </Modal>
-      </View>
+          </ImageBackground>
+        </View>
+      </Modal>
+    </View>
   );
 }
 
@@ -109,51 +112,52 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   readButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   centeredView: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     width: 400,
     height: 400,
     alignItems: "center",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     padding: 15,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255,255,255,0.8)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(255,255,255,0.8)",
+    justifyContent: "center",
     padding: 30,
   },
   openButton: {
     backgroundColor: Colors.primary,
     borderRadius: 20,
     padding: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 15,
   },
   textStyle: {
     color: "white",
     fontWeight: "bold",
-    textAlign: "center"
+    textAlign: "center",
   },
   modalTextLarge: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
+    paddingVertical: 30,
     paddingHorizontal: 30,
   },
   scrollView: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });

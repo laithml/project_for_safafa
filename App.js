@@ -8,6 +8,8 @@ import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import {createStackNavigator} from "@react-navigation/stack";
 import FP from "./screens/ForgetPassowrd";
+import MyProfile from './screens/myProfile';
+
 import {
     View,
     Button,
@@ -103,7 +105,10 @@ const CustomDrawerContent = (props) => {
                         }}
                     >
                         {user ? (
-                            <Button title="Logout" onPress={handleLogout}/>
+                            <>
+                                <Button title="My Profile" onPress={() => props.navigation.navigate("MyProfile")}/>
+                                <Button title="Logout" onPress={handleLogout}/>
+                            </>
                         ) : (
                             <>
                                 <Button
@@ -161,6 +166,12 @@ export default function App() {
                             ),
                         }}
                     />
+                    <Stack.Screen
+                        name="MyProfile"
+                        component={MyProfile}
+                        options={{ headerShown: false }}
+                    />
+
 
                 </Stack.Navigator>
             </NavigationContainer>

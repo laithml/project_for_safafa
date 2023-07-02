@@ -1,5 +1,5 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import React, { useContext } from "react";
+import { ScrollView, Text, TouchableOpacity, View,KeyboardAvoidingView, Platform } from "react-native";
+import React, { useRef } from "react";
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
@@ -10,75 +10,99 @@ import { SignUpFireBase } from "../services/auth";
 import { auth } from "../config/firebase";
 
 export default function SignUp() {
-  const navigation = useNavigation();
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [age, setAge] = React.useState("");
-  const [errorMessageEmail, setErrorMessageEmail] = React.useState("");
-  const [errorMessageName, setErrorMessageName] = React.useState("");
-  const [errorMessagePhone, setErrorMessagePhone] = React.useState("");
-  const [errorMessagePassword, setErrorMessagePassword] = React.useState("");
-  const [errorMessageAge, setErrorMessageAge] = React.useState("");
+    const navigation = useNavigation();
 
-  const handleEmailBlur = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setErrorMessageEmail("Invalid email address");
-    } else {
-      setErrorMessageEmail("");
+    // TextInput references
+    const birthdateRef = useRef();
+    const genderRef = useRef();
+    const emailRef = useRef();
+    const phoneNumberRef = useRef();
+    const passwordRef = useRef();
+
+    const [fullName, setFullName] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = React.useState("");
+    const [password, setPassword] = React.useState("");
+    const [birthdate, setBirthdate] = React.useState("");
+    const [gender, setGender] = React.useState("");
+    const [errorMessageEmail, setErrorMessageEmail] = React.useState("");
+    const [errorMessageName, setErrorMessageName] = React.useState("");
+    const [errorMessagePhone, setErrorMessagePhone] = React.useState("");
+    const [errorMessagePassword, setErrorMessagePassword] = React.useState("");
+    const [errorMessageBirthdate, setErrorMessageBirthdate] = React.useState("");
+    const [errorMessageGender, setErrorMessageGender] = React.useState("");
+
+    const handleBirthdateBlur = () => {
+        const birthdateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!birthdateRegex.test(birthdate)) {
+            setErrorMessageBirthdate("Birthdate must be in the format YYYY-MM-DD");
+        } else {
+            setErrorMessageBirthdate("");
+        }
+    };
+
+    const handleGenderBlur = () => {
+        if (!["Male", "Female"].includes(gender)) {
+            setErrorMessageGender("Gender must be either Male Or Female");
+        } else {
+            setErrorMessageGender("");
+        }
+    };
+
+    const handleEmailBlur = () => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setErrorMessageEmail("Invalid email address");
+        } else {
+            setErrorMessageEmail("");
+        }
+    };
+
+    function handleNameBlur() {
+        const nameRegex = /^\S+\s\S+$/; // this should match two or more words separated by spaces
+        const maxLength = 30; // maximum length of name
+
+        if (fullName.length > maxLength) {
+            // name is too long
+            setErrorMessageName("Name must be 30 characters or less.");
+        } else if (!nameRegex.test(fullName)) {
+            // name doesn't have at least two words separated by spaces
+            setErrorMessageName("Please enter just your name and your family name");
+        } else {
+            // name is valid
+            setErrorMessageName("");
+        }
     }
-  };
 
-  function handleNameBlur() {
-    const nameRegex = /^\S+\s\S+$/; // this should match two or more words separated by spaces
-    const maxLength = 30; // maximum length of name
+    const handlePhoneBlur = () => {
+        const phoneRegex = /^(050|051|052|053|054|055|058)\d{7}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            setErrorMessagePhone(
+                "Phone number must start with one of the valid prefixes (050, 051, 052, 053, 054, 055, 058) and be 10 digits long."
+            );
+        } else {
+            setErrorMessagePhone("");
+        }
+    };
 
-    if (fullName.length > maxLength) {
-      // name is too long
-      setErrorMessageName("Name must be 30 characters or less.");
-    } else if (!nameRegex.test(fullName)) {
-      // name doesn't have at least two words separated by spaces
-      setErrorMessageName("Please enter just your name and your family name");
-    } else {
-      // name is valid
-      setErrorMessageName("");
-    }
-  }
+    const handlePasswordBlur = () => {
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\W]{8,15}$/;
 
-  const handlePhoneBlur = () => {
-    const phoneRegex = /^(050|051|052|053|054|055|058)\d{7}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      setErrorMessagePhone(
-        "Phone number must start with one of the valid prefixes (050, 051, 052, 053, 054, 055, 058) and be 10 digits long."
-      );
-    } else {
-      setErrorMessagePhone("");
-    }
-  };
+        if (!passwordRegex.test(password)) {
+            setErrorMessagePassword(
+                "Password must be between 8 to 15 characters long and contain at least one letter and one number."
+            );
+        } else {
+            setErrorMessagePassword("");
+        }
+    };
 
-  const handlePasswordBlur = () => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d\W]{8,15}$/;
 
-    if (!passwordRegex.test(password)) {
-      setErrorMessagePassword(
-        "Password must be between 8 to 15 characters long and contain at least one letter and one number."
-      );
-    } else {
-      setErrorMessagePassword("");
-    }
-  };
-
-  const handleAgeBlur = () => {
-    if (!age || age.length > 2) {
-      setErrorMessageAge("please enter a valid age");
-    } else {
-      setErrorMessageAge("");
-    }
-  };
-
-  return (
+    return (
+        <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}
+        >
     <ScrollView>
       <View style={{ padding: Spacing }}>
         <View style={{ alignItems: "center" }}>
@@ -102,20 +126,23 @@ export default function SignUp() {
           </Text>
         </View>
         <View style={{ marginVertical: Spacing }}>
-          <TextInput
-            placeholder="Full Name"
-            onChangeText={(text) => setFullName(text)}
-            placeholderTextColor={Colors.darkText}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessageName ? "red" : Colors.gray,
-            }}
-            onBlur={handleNameBlur}
-          />
+            <TextInput
+                placeholder="Full Name"
+                onChangeText={(text) => setFullName(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="next" // label the return key as "next"
+                onSubmitEditing={() => birthdateRef.current?.focus()}
+                blurOnSubmit={false}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessageName ? "red" : Colors.gray,
+                }}
+                onBlur={handleNameBlur}
+            />
           {errorMessageName ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ color: "red", marginRight: 5 }}>
@@ -124,44 +151,76 @@ export default function SignUp() {
               <Ionicons name="ios-warning-outline" size={20} color="red" />
             </View>
           ) : null}
-          <TextInput
-            placeholder="Age"
-            keyboardType={"numeric"}
-            onChangeText={(text) => setAge(text)}
-            placeholderTextColor={Colors.darkText}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessageName ? "red" : Colors.gray,
-            }}
-            onBlur={handleAgeBlur}
-          />
-          {errorMessageName ? (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ color: "red", marginRight: 5 }}>
-                {errorMessageName}
-              </Text>
-              <Ionicons name="ios-warning-outline" size={20} color="red" />
-            </View>
-          ) : null}
-
-          <TextInput
-            placeholder="Email"
-            onChangeText={(text) => setEmail(text)}
-            placeholderTextColor={Colors.darkText}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessageName ? "red" : Colors.gray,
-            }}
-            onBlur={handleEmailBlur}
-          />
+            <TextInput
+                ref={birthdateRef}
+                placeholder="Birthdate (YYYY-MM-DD)"
+                onChangeText={(text) => setBirthdate(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="next" // label the return key as "next"
+                onSubmitEditing={() => genderRef.current?.focus()}
+                blurOnSubmit={false}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessageBirthdate ? "red" : Colors.gray,
+                }}
+                onBlur={handleBirthdateBlur}
+            />
+            {errorMessageBirthdate ? (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ color: "red", marginRight: 5 }}>
+                        {errorMessageBirthdate}
+                    </Text>
+                    <Ionicons name="ios-warning-outline" size={20} color="red" />
+                </View>
+            ) : null}
+            <TextInput
+                ref={genderRef}
+                placeholder="Gender"
+                onChangeText={(text) => setGender(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="next"
+                onSubmitEditing={() => emailRef.current?.focus()}
+                blurOnSubmit={false}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessageGender ? "red" : Colors.gray,
+                }}
+                onBlur={handleGenderBlur}
+            />
+            {errorMessageGender ? (
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={{ color: "red", marginRight: 5 }}>
+                        {errorMessageGender}
+                    </Text>
+                    <Ionicons name="ios-warning-outline" size={20} color="red" />
+                </View>
+            ) : null}
+            <TextInput
+                ref={emailRef}
+                placeholder="Email"
+                onChangeText={(text) => setEmail(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="next"
+                onSubmitEditing={() => phoneNumberRef.current?.focus()}
+                blurOnSubmit={false}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessageEmail ? "red" : Colors.gray,
+                }}
+                onBlur={handleEmailBlur}
+            />
           {errorMessageEmail ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ color: "red", marginRight: 5 }}>
@@ -171,21 +230,24 @@ export default function SignUp() {
             </View>
           ) : null}
 
-          <TextInput
-            placeholder="Phone Number"
-            keyboardType={"numeric"}
-            placeholderTextColor={Colors.darkText}
-            onChangeText={(text) => setPhoneNumber(text)}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessagePhone ? "red" : Colors.gray,
-            }}
-            onBlur={handlePhoneBlur}
-          />
+            <TextInput
+                ref={phoneNumberRef}
+                placeholder="Phone Number"
+                onChangeText={(text) => setPhoneNumber(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordRef.current?.focus()}
+                blurOnSubmit={false}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessagePhone ? "red" : Colors.gray,
+                }}
+                onBlur={handlePhoneBlur}
+            />
           {errorMessagePhone ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ color: "red", marginRight: 5 }}>
@@ -195,30 +257,23 @@ export default function SignUp() {
             </View>
           ) : null}
 
-          <TextInput
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            placeholderTextColor={Colors.darkText}
-            secureTextEntry={true}
-            style={{
-              borderWidth: 1,
-              backgroundColor: Colors.lightPrimary,
-              borderRadius: Spacing,
-              padding: Spacing * 2,
-              marginVertical: Spacing,
-              borderColor: errorMessagePassword ? "red" : Colors.gray,
-            }}
-            onBlur={handlePasswordBlur}
-          />
-          {errorMessagePassword ? (
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Text style={{ color: "red", marginRight: 5 }}>
-                {errorMessagePassword}
-              </Text>
-              <Ionicons name="ios-warning-outline" size={20} color="red" />
-            </View>
-          ) : null}
-
+            <TextInput
+                ref={passwordRef}
+                placeholder="Password"
+                onChangeText={(text) => setPassword(text)}
+                placeholderTextColor={Colors.darkText}
+                returnKeyType="done" // as this is the last input, you can mark this as "done"
+                blurOnSubmit={true}
+                style={{
+                    borderWidth: 1,
+                    backgroundColor: Colors.lightPrimary,
+                    borderRadius: Spacing,
+                    padding: Spacing * 2,
+                    marginVertical: Spacing,
+                    borderColor: errorMessagePassword ? "red" : Colors.gray,
+                }}
+                onBlur={handlePasswordBlur}
+            />
           {errorMessagePassword ? (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text style={{ color: "red", marginRight: 5 }}>
@@ -229,25 +284,27 @@ export default function SignUp() {
           ) : null}
         </View>
         <TouchableOpacity
-          onPress={async () => {
-            if (
-              errorMessageEmail ||
-              errorMessageName ||
-              errorMessagePhone ||
-              errorMessagePassword ||
-              errorMessageAge
-            ) {
-              // Display error message or prevent sign-up process
-              return;
-            }
+            onPress={async () => {
+                if (
+                    errorMessageEmail ||
+                    errorMessageName ||
+                    errorMessagePhone ||
+                    errorMessagePassword ||
+                    errorMessageBirthdate ||
+                    errorMessageGender
+                ) {
+                    // Display error message or prevent sign-up process
+                    return;
+                }
 
-            const result = await SignUpFireBase(
-              email,
-              age,
-              password,
-              fullName,
-              phoneNumber
-            );
+              const result = await SignUpFireBase(
+                  email,
+                  password,
+                  fullName,
+                  phoneNumber,
+                  birthdate,
+                  gender
+              );
 
             if (result === true) {
               // Immediately sign out after successful signup
@@ -301,5 +358,7 @@ export default function SignUp() {
         </TouchableOpacity>
       </View>
     </ScrollView>
-  );
+        </KeyboardAvoidingView>
+
+    );
 }

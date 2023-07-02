@@ -68,24 +68,32 @@ export default function Payment({ route, navigation }) {
     setIsLoading(true);
 
     // Simulate an asynchronous purchase process
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsLoading(false);
       const docRef = doc(db, "Courses", course.id);
       const studentsArrayUnion = arrayUnion(user.id);
 
       updateDoc(docRef, { students: studentsArrayUnion })
-        .then(() => {
-          console.log(
-            "A new student has been added to the course successfully"
-          );
-        })
-        .catch((error) => {
-          console.log("Error adding student to the course:", error);
-        });
+          .then(async () => {
+            console.log(
+                "A new student has been added to the course successfully"
+            );
+            // After adding student to the course, add the course to the student's purchasedCourses
+            const userDocRef = doc(db, "users", user.id);
+            const purchasedCoursesArrayUnion = arrayUnion(course.id);
+
+            await updateDoc(userDocRef, {
+              purchasedCourses: purchasedCoursesArrayUnion,
+            });
+          })
+          .catch((error) => {
+            console.log("Error adding student to the course:", error);
+          });
       alert("Payment successful");
       navigation.navigate("Courses");
     }, 2000);
   };
+
 
   const handleMonthChange = (value) => {
     setMonth(value);

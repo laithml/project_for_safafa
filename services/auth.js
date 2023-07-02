@@ -8,10 +8,11 @@ import { doc, setDoc } from "firebase/firestore";
 
 export const SignUpFireBase = async (
   email,
-  age,
   password,
   fullName,
-  phoneNumber
+  phoneNumber,
+  age,
+  gender
 ) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -25,6 +26,7 @@ export const SignUpFireBase = async (
       id: userCredential.user.uid,
       fullName: fullName,
       age: age,
+      gender: gender,
       email: email,
       phoneNumber: phoneNumber,
       password: password,

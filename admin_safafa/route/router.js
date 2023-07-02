@@ -6,37 +6,37 @@ const CourseController = require("../controllers/CoursesController");
 const EventController = require("../controllers/EventsController");
 const requireAuth = require("../Middleware/mid");
 
-router.get("/", HomeController.Main);
+router.get("/",requireAuth ,HomeController.Main);
 
 router.get("/login", HomeController.login);
 
-router.get("/events", HomeController.events );
+router.get("/events",requireAuth ,HomeController.events );
 
 router.get("/not-found", HomeController.notFound);
 
 
 //----------------------------------------------------------------------
-router.get("/courses", CourseController.getCourses);
+router.get("/courses",requireAuth, CourseController.getCourses);
 
-router.get("/courses/:id", CourseController.getCourse);
+router.get("/courses/:id",requireAuth, CourseController.getCourse);
 
-router.post("/courses", CourseController.createCourse);
+router.post("/courses",requireAuth, CourseController.createCourse);
 
-router.put("/courses/:id", CourseController.updateCourse);
+router.put("/courses/:id",requireAuth, CourseController.updateCourse);
 
-router.delete("/courses/:id", CourseController.deleteCourse);
+router.delete("/courses/:id",requireAuth, CourseController.deleteCourse);
 
-router.get("/students/:id", CourseController.getStudentCourses);
+router.get("/students/:id",requireAuth, CourseController.getStudentCourses);
 
-router.get("/event", EventController.getEvents );
+router.get("/event",requireAuth, EventController.getEvents );
 
-router.post("/event", EventController.createEvent );
+router.post("/event",requireAuth, EventController.createEvent );
 
-router.get("/event/:id", EventController.getEvent );
+router.get("/event/:id",requireAuth, EventController.getEvent );
 
-router.put("/event/:id", EventController.updateEvent);
+router.put("/event/:id",requireAuth, EventController.updateEvent);
 
-router.delete("/event/:id", EventController.deleteEvent);
+router.delete("/event/:id",requireAuth, EventController.deleteEvent);
 
 
 

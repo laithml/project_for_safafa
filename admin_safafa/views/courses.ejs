@@ -10,6 +10,8 @@
 
     <title>Beit Safafa Center- Tables</title>
 
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
     <!-- Custom fonts for this template -->
     <link href="../public/fonts/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -192,7 +194,7 @@
 
 
 <!-- Create Modal -->
-<div id="createCourseModal" class="modal" tabindex="-1" role="dialog">
+<div id="createCourseModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -214,6 +216,10 @@
                     <div class="form-group">
                         <label for="newCoursePrice">Course Price:</label>
                         <input type="text" class="form-control" id="newCoursePrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newCourseAge">Course Age Limit:</label>
+                        <input type="number" class="form-control" id="newCourseAge" value="0" required>
                     </div>
                     <div class="form-group">
                         <label for="newCourseDescription">Course Description:</label>
@@ -252,6 +258,10 @@
                     <div class="form-group">
                         <label for="coursePrice">Course Price</label>
                         <input type="number" class="form-control" id="coursePrice" placeholder="Enter course price">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseLimit">Course Age Limit</label>
+                        <input type="number" class="form-control" id="courseLimit"  placeholder="Enter course Age Limit">
                     </div>
                     <div class="form-group">
                         <label for="courseDescription">Course Description</label>

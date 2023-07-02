@@ -180,45 +180,11 @@
 <a class="scroll-to-top rounded" href="#page-top">
   <i class="fas fa-angle-up"></i>
 </a>
-<!-- Edit Event Modal -->
-<div class="modal fade" id="editEventModal" tabindex="-1" role="dialog" aria-labelledby="editEventModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editEventModalLabel">Edit Event</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editEventForm">
-          <input type="text" class="form-control" id="eventId" hidden="hidden">
 
-          <div class="form-group">
-            <label for="eventName">Event Name</label>
-            <input type="text" class="form-control" id="eventName" placeholder="Enter event name">
-          </div>
-          <div class="form-group">
-            <label for="eventImg">Event Image</label>
-            <input type="text" class="form-control" id="eventImg">
-          </div>
-          <div class="form-group">
-            <label for="eventDescription">Event Description</label>
-            <input type="text" class="form-control" id="eventDescription" placeholder="Enter event description">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <button class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <!-- Create Event Modal -->
-<div id="createEventModal" class="modal" tabindex="-1" role="dialog">
+<div class="modal fade" id="createEventModal"  tabindex="-1"  role="dialog" aria-labelledby="createEventModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -230,16 +196,16 @@
       <div class="modal-body">
         <form id="createEventForm">
           <div class="form-group">
-            <label for="eventName">Event Name:</label>
-            <input type="text" class="form-control" id="eventName" required>
+            <label for="createEventName">Event Name:</label>
+            <input type="text" class="form-control" id="createEventName" required>
           </div>
           <div class="form-group">
-            <label for="eventImage">Image URL:</label>
-            <input type="text" class="form-control" id="eventImage" required>
+            <label for="createEventImage">Image URL:</label>
+            <input type="text" class="form-control" id="createEventImage" required>
           </div>
           <div class="form-group">
-            <label for="eventDescription">Description:</label>
-            <textarea class="form-control" id="eventDescription" rows="3" required></textarea>
+            <label for="createEventDescription">Description:</label>
+            <textarea class="form-control" id="createEventDescription" rows="3" required></textarea>
           </div>
           <button id="submitEvent" class="btn btn-primary">Create</button>
         </form>
@@ -342,7 +308,7 @@
 
 <!-- Page level custom scripts -->
 <script src="../public/js/datatables-demo.js"></script>
-<script src="public/js/events.js"></script>
+<script src="../public/js/events.js"></script>
 
 
 

@@ -2,7 +2,7 @@ $(document).ready(() => {
 
     let eventTable = $("#events").DataTable({
         data: [],
-        columns: [{data: "id"}, {data: "name"}, {data: "image"}, {data: "desc"}, {data: "manage"}]
+        columns: [{data: "id"}, {data: "name"}, {data: "image"}, {data: "desc"},{data: "manage"}]
     });
 
     fetch("/event").then((res) => {
@@ -32,6 +32,7 @@ $(document).on("click", ".edit", function () {
             $("#eventName").val(event.name);
             $("#eventImg").val(event.img);
             $("#eventDescription").val(event.description);
+            $("#eventParticipants").val(event.MaxP);
 
             // Show the edit event modal
             $("#editEventModal").modal("show");
@@ -111,7 +112,7 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 btn.onclick = function () {
-    modal.style.display = "block";
+    $("#createEventModal").modal("show");
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -131,9 +132,9 @@ document.getElementById("submitEvent").addEventListener("click", function (event
     event.preventDefault(); // Prevent form submission
 
     // Retrieve the input values
-    var eventName = document.getElementById("eventName").value;
-    var eventImage = document.getElementById("eventImage").value;
-    var eventDescription = document.getElementById("eventDescription").value;
+    var eventName = document.getElementById("createEventName").value;
+    var eventImage = document.getElementById("createEventImage").value;
+    var eventDescription = document.getElementById("createEventDescription").value;
 
     // Create an object with the event details
     var eventData = {

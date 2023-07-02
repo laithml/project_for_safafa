@@ -41,6 +41,7 @@ exports.createCourse = (req, res) => {
         name: req.body.name,
         img: req.body.img,
         price: req.body.price,
+        limit: req.body.limit,
         description: req.body.description,
     }
     console.log(data);

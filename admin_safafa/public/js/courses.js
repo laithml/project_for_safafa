@@ -30,9 +30,12 @@ $(document).ready(() => {
                     .append("<td>" + course.description + "</td>")
                     .append(
                         $("<td>").html(
-                            `<button class="btn btn-success btn-circle list" data-id="${course.id}"><i class="fas fa-list"></i></button>
+
+                            ` <button class="btn btn-primary btn-circle excel" data-id="${course.id}"><i class="fas fa-file-excel"></i></button>
+               <button class="btn btn-success btn-circle list" data-id="${course.id}"><i class="fas fa-list"></i></button>
                <button class="btn btn-secondary btn-circle edit" data-id="${course.id}"><i class="fas fa-edit"></i></button>
-               <button class="btn btn-danger btn-circle delete" data-id="${course.id}"><i class="fas fa-minus-circle"></i></button>`
+               <button class="btn btn-danger btn-circle delete" data-id="${course.id}"><i class="fas fa-minus-circle"></i></button>
+       `
                         )
                     );
                 coursesTable.row.add(courseData);
@@ -40,6 +43,36 @@ $(document).ready(() => {
             coursesTable.draw();
         })
         .catch((error) => console.error(error));
+
+    $(document).on("click", ".excel", function () {
+        let courseId = $(this).data("id");
+        fetch("/students/" + courseId)
+            .then((res) => res.json())
+            .then((data) => {
+                // Generate the Excel file and download it
+                generateExcelFile(data);
+            })
+            .catch((error) => console.error(error));
+    });
+
+    function generateExcelFile(data) {
+        // Remove the "id" and "purchasedCourses" properties from each student object
+        const filteredData = data.map(({ id, purchasedCourses,password, ...student }) => student);
+
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(filteredData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "students.xlsx";
+        link.click();
+    }
+
+
+
 
     $(document).on("click", ".list", function () {
         let id = $(this).data("id");
@@ -118,6 +151,7 @@ $(document).ready(() => {
                 $("#courseName").val(course.name);
                 $("#courseImage").val(course.img);
                 $("#coursePrice").val(course.price);
+                $("#courseLimit").val(course.limit);
                 $("#courseDescription").val(course.description);
                 //add the course id to the hidden input field
                 $("#courseId").val(course.id);
@@ -133,6 +167,7 @@ $(document).ready(() => {
         let courseName = $("#courseName").val();
         let courseImage = $("#courseImage").val();
         let coursePrice = $("#coursePrice").val();
+        let courseLimit = $("#newCourseAge").val();
         let courseDescription = $("#courseDescription").val();
 
         // Create an object with the updated course details
@@ -140,6 +175,7 @@ $(document).ready(() => {
             name: courseName,
             img: courseImage,
             price: coursePrice,
+            limit: courseLimit,
             description: courseDescription,
         };
 
@@ -206,7 +242,8 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal
 btn.onclick = function () {
-    modal.style.display = "block";
+$("#createCourseModal").modal("show");
+
 }
 
 // When the user clicks on <span> (x), close the modal

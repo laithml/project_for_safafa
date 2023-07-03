@@ -38,6 +38,7 @@ exports.createEvent = (req,res) => {
         id: id,
         name: req.body.name,
         img: req.body.img,
+        capacity: req.body.capacity,
         description: req.body.description
     }
     const refEvent = doc(db, "events",id );
@@ -49,6 +50,7 @@ exports.createEvent = (req,res) => {
 
 // Update a event
 exports.updateEvent = (req,res) => {
+    console.log(req.body);
     const refEvent = doc(db, "events", req.params.id)
     updateDoc(refEvent, req.body).then(() => {
         res.status(200).send("Course updated successfully");
@@ -63,3 +65,34 @@ exports.deleteEvent = (req,res) => {
     });
 }
 
+exports.getEventUsers = (req, res) => {
+    console.log("getEventUsers");
+    const eventId = req.params.id;
+    //get the users ids from events users array get the id of them and go t retrieve the user data
+    const refEvent = doc(db, "events", eventId);
+    getDoc(refEvent).then((docEvent) => {
+        //pass on the users array and for each element get the users data
+        let usersList = docEvent.data().users;
+        if (usersList == undefined || usersList.length == 0) {
+            res.status(200).send([]);
+        }else {
+            let usersDataPromises = Object.values(usersList).map((user) => {
+                //remove the spaces from the user id
+                const trimmedUser = user.trim();
+                let refUser = doc(db, "users", trimmedUser);
+                return getDoc(refUser).then((usersDoc) => {
+                    return usersDoc.data();
+                });
+            });
+
+            Promise.all(usersDataPromises)
+                .then((usersData) => {
+                    res.status(200).send(usersData);
+                })
+
+                .catch((error) => {
+                    res.status(500).send("Error occurred while fetching user data");
+                });
+        }
+    });
+};

@@ -4,10 +4,10 @@ $(document).ready(() => {
     let coursesTable = $("#courses").DataTable({
         data: [],
         columns: [
-            {data: "id"},
             {data: "name"},
             {data: "image"},
             {data: "price"},
+            {data: "capacity"},
             {data: "description"},
             {data: "manage"},
         ],
@@ -19,7 +19,6 @@ $(document).ready(() => {
             coursesTable.clear();
             Object.values(data).forEach((course) => {
                 let courseData = $("<tr>")
-                    .append("<td>" + course.id + "</td>")
                     .append("<td>" + course.name + "</td>")
                     .append(
                         '<td><img class="rounded-circle" width="200px" height="128px" src="' +
@@ -27,11 +26,12 @@ $(document).ready(() => {
                         '"></td>'
                     )
                     .append("<td>" + course.price + "</td>")
+                    .append("<td>" + course.capacity + "</td>")
                     .append("<td>" + course.description + "</td>")
                     .append(
                         $("<td>").html(
 
-                            ` <button class="btn btn-primary btn-circle excel" data-id="${course.id}"><i class="fas fa-file-excel"></i></button>
+                            ` <button class="btn btn-primary btn-circle excel" data-name="${course.name}" data-id="${course.id}"><i class="fas fa-file-excel"></i></button>
                <button class="btn btn-success btn-circle list" data-id="${course.id}"><i class="fas fa-list"></i></button>
                <button class="btn btn-secondary btn-circle edit" data-id="${course.id}"><i class="fas fa-edit"></i></button>
                <button class="btn btn-danger btn-circle delete" data-id="${course.id}"><i class="fas fa-minus-circle"></i></button>
@@ -46,17 +46,18 @@ $(document).ready(() => {
 
     $(document).on("click", ".excel", function () {
         let courseId = $(this).data("id");
+        let courseName = $(this).data("name");
         fetch("/students/" + courseId)
             .then((res) => res.json())
             .then((data) => {
                 // Generate the Excel file and download it
-                generateExcelFile(data);
+                generateExcelFile(courseName,data);
             })
             .catch((error) => console.error(error));
     });
 
-    function generateExcelFile(data) {
-        // Remove the "id" and "purchasedCourses" properties from each student object
+    function generateExcelFile(courseName,data) {
+        // Remove the "id" , "purchasedCourses" and "passwords" properties from each student object
         const filteredData = data.map(({ id, purchasedCourses,password, ...student }) => student);
 
         const workbook = XLSX.utils.book_new();
@@ -67,7 +68,7 @@ $(document).ready(() => {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "students.xlsx";
+        link.download = courseName+"_students.xlsx";
         link.click();
     }
 
@@ -79,8 +80,19 @@ $(document).ready(() => {
         fetch("/students/" + id)
             .then((res) => res.json())
             .then((data) => {
-                // Create the HTML content for the student details
-                let tableContent = `
+
+                if(data.length == 0){
+                    //there is no students in this course put it inside the modal
+                    $("#listStudentsBody").html("<h3>There is no students in this course</h3>");
+
+                    // Show the modal
+                    $("#studentModal").modal("show");
+
+
+                }else {
+
+                    // Create the HTML content for the student details
+                    let tableContent = `
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -91,51 +103,26 @@ $(document).ready(() => {
                     </thead>
                     <tbody>
             `;
-                data.forEach((student) => {
-                    tableContent += `
+                    data.forEach((student) => {
+                        tableContent += `
                     <tr>
                         <td>${student.fullName}</td>
                         <td>${student.email}</td>
                         <td>${student.phoneNumber}</td>
                     </tr>
                 `;
-                });
-                tableContent += `
+                    });
+                    tableContent += `
                     </tbody>
                 </table>
             `;
+                    // Put the HTML content inside the modal
+                    $("#listStudentsBody").html(tableContent);
 
-                // Create the modal pop-up window
-                let modalHtml = `
-                <div id="studentModal" class="modal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Student Details</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                ${tableContent}
-                            </div>
-                            <div class="modal-footer"> <!-- Added modal footer -->
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-                // Append the modal HTML to the body
-                $("body").append(modalHtml);
+                    // Show the modal
+                    $("#studentModal").modal("show");
 
-                // Show the modal
-                $("#studentModal").modal("show");
-
-                // Remove the modal from the DOM when it's hidden
-                $("#studentModal").on("hidden.bs.modal", function () {
-                    $(this).remove();
-                });
+                }
             })
             .catch((error) => console.error(error));
     });
@@ -153,6 +140,8 @@ $(document).ready(() => {
                 $("#coursePrice").val(course.price);
                 $("#courseLimit").val(course.limit);
                 $("#courseDescription").val(course.description);
+                $("#courseLimit").val(course.ageLimit);
+                $("#courseCapacity").val(course.capacity);
                 //add the course id to the hidden input field
                 $("#courseId").val(course.id);
 
@@ -167,7 +156,8 @@ $(document).ready(() => {
         let courseName = $("#courseName").val();
         let courseImage = $("#courseImage").val();
         let coursePrice = $("#coursePrice").val();
-        let courseLimit = $("#newCourseAge").val();
+        let courseLimit = $("#courseLimit").val();
+        let courseCapacity = $("#courseCapacity").val();
         let courseDescription = $("#courseDescription").val();
 
         // Create an object with the updated course details
@@ -175,7 +165,8 @@ $(document).ready(() => {
             name: courseName,
             img: courseImage,
             price: coursePrice,
-            limit: courseLimit,
+            ageLimit: courseLimit,
+            capacity: courseCapacity,
             description: courseDescription,
         };
 
@@ -263,16 +254,20 @@ document.getElementById("submit").addEventListener("click", function (event) {
     event.preventDefault(); // Prevent form submission
 
     // Retrieve the input values
-    var courseName = document.getElementById("newCourseName").value;
-    var courseImage = document.getElementById("newCourseImage").value;
-    var coursePrice = document.getElementById("newCoursePrice").value;
-    var courseDescription = document.getElementById("newCourseDescription").value;
+    let courseName = document.getElementById("newCourseName").value;
+    let courseImage = document.getElementById("newCourseImage").value;
+    let coursePrice = document.getElementById("newCoursePrice").value;
+    let courseLimit = document.getElementById("newCourseAge").value;
+    let courseCapacity = document.getElementById("newCourseCapacity").value;
+    let courseDescription = document.getElementById("newCourseDescription").value;
 
     // Create an object with the course details
     var courseData = {
         name: courseName,
         img: courseImage,
         price: coursePrice,
+        ageLimit: courseLimit,
+        capacity: courseCapacity,
         description: courseDescription
     };
     fetch("/courses", {

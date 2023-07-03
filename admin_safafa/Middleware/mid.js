@@ -6,7 +6,6 @@ function requireAuth(req, res, next) {
     if (user) {
         // User is logged in, proceed to the next middleware/route handler
         //check if the user is admin
-
         const refUser = doc(db, "users", user.uid);
         getDoc(refUser).then((doc) => {
             if (doc.exists()) {

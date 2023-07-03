@@ -41,8 +41,10 @@ exports.createCourse = (req, res) => {
         name: req.body.name,
         img: req.body.img,
         price: req.body.price,
-        limit: req.body.limit,
+        ageLimit: req.body.ageLimit,
+        capacity: req.body.capacity,
         description: req.body.description,
+        students: [],
     }
     console.log(data);
     const refCourse = doc(db, "Courses", data.id);
@@ -53,6 +55,7 @@ exports.createCourse = (req, res) => {
 
 // Update a course
 exports.updateCourse = (req, res) => {
+    console.log(req.body);
     const refCourse = doc(db, "Courses", req.params.id);
     updateDoc(refCourse, req.body).then(() => {
         res.status(200).send({message: "Course updated successfully"});
@@ -76,22 +79,27 @@ exports.getStudentCourses = (req, res) => {
     getDoc(refCourse).then((docCourse) => {
         //pass on the students array and for each element get the students data
         let studentsList = docCourse.data().students;
-        let studentsDataPromises = Object.values(studentsList).map((student) => {
-            //remove the spaces from the student id
-            const trimmedStudent = student.trim();
-            let refStudent = doc(db, "users", trimmedStudent);
-            return getDoc(refStudent).then((studentsDoc) => {
-                return studentsDoc.data();
+        if (studentsList == undefined || studentsList.length == 0) {
+            res.status(200).send([]);
+        }else {
+            let studentsDataPromises = Object.values(studentsList).map((student) => {
+                //remove the spaces from the student id
+                const trimmedStudent = student.trim();
+                let refStudent = doc(db, "users", trimmedStudent);
+                return getDoc(refStudent).then((studentsDoc) => {
+                    return studentsDoc.data();
+                });
             });
-        });
 
-        Promise.all(studentsDataPromises)
-            .then((studentsData) => {
-                res.status(200).send(studentsData);
-            })
-            .catch((error) => {
-                res.status(500).send("Error occurred while fetching student data");
-            });
+            Promise.all(studentsDataPromises)
+                .then((studentsData) => {
+                    res.status(200).send(studentsData);
+                })
+
+                .catch((error) => {
+                    res.status(500).send("Error occurred while fetching student data");
+                });
+        }
     });
 };
 

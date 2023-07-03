@@ -34,9 +34,13 @@ router.post("/event",requireAuth, EventController.createEvent );
 
 router.get("/event/:id",requireAuth, EventController.getEvent );
 
+router.get("/event/:id/users",requireAuth, EventController.getEventUsers );
+
 router.put("/event/:id",requireAuth, EventController.updateEvent);
 
 router.delete("/event/:id",requireAuth, EventController.deleteEvent);
+
+
 
 
 

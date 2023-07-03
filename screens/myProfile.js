@@ -40,7 +40,7 @@ export default function MyProfile({navigation}) {
                         {user && (
                             <>
                                 <Text style={styles.detail}>Name: {user.fullName}</Text>
-                                <Text style={styles.detail}>Age: {user.age}</Text>
+                                <Text style={styles.detail}>Birth Date: {user.age}</Text>
                                 <Text style={styles.detail}>Phone: {user.phoneNumber}</Text>
                                 <Text style={styles.detail}>Email: {user.email}</Text>
 

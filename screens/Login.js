@@ -27,7 +27,7 @@ export default function Login() {
 
             if (docSnap.exists()) {
                 setUser(docSnap.data());
-                navigation.navigate("Home");
+                navigation.navigate("الرئيسية");
             } else {
                 console.log('No such document!');
             }
@@ -137,7 +137,7 @@ export default function Login() {
                     )}
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("SignUp")}
+                    onPress={() => navigation.navigate("إنشاء حساب")}
                     style={{
                         padding: Spacing,
                     }}

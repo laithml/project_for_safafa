@@ -56,7 +56,7 @@ export default function Home() {
     const navigation = useNavigation();
 
     const handleCoursePress = () => {
-      navigation.navigate("Courses");
+      navigation.navigate("الدورات");
     };
 
     return (
@@ -82,7 +82,7 @@ export default function Home() {
                   source={require("../assets/click-icon.png")}
                   style={styles.clickIndicatorImage}
                 />
-                <Text style={styles.clickIndicatorText}>Tap to Learn More</Text>
+                <Text style={styles.clickIndicatorText}>أضغط للمزيد</Text>
               </View>
             </View>
           )}
@@ -101,7 +101,7 @@ export default function Home() {
     const navigation = useNavigation();
 
     const handleEventPress = () => {
-      navigation.navigate("Events");
+      navigation.navigate("الأحداث");
     };
 
     return (
@@ -143,24 +143,24 @@ export default function Home() {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Welcome to</Text>
-            <Text style={styles.title}>Beit Safafa Center</Text>
+            <Text style={styles.title}>اهلا و سهلا بكم</Text>
+            <Text style={styles.title}>مركز جماهيري بيت صفافا شرفات</Text>
           </View>
 
           <View style={styles.intro}>
-            <Text style={styles.introHead}>Who are we?</Text>
+            <Text style={styles.introHead}>من نحن ؟ </Text>
             <Text style={styles.introText}>
-              We're an association dedicated to our local residents. We support
-              local initiatives that align with the residents' needs. We work
-              with other town institutions to build plans to improve local
-              services. Our goal is simply to improve the quality of life
-              through the efforts of our teams.
+              نحن جمعية مخصصة لسكاننا المحليين. نحن ندعم
+              المبادرات المحلية التي تتوافق مع احتياجات السكان. نحن نعمل
+              مع مؤسسات المدينة الأخرى لبناء خطط لتحسين المستوى المحلي
+              خدمات. هدفنا هو ببساطة تحسين نوعية الحياة
+              من خلال جهود فرقنا.
             </Text>
           </View>
 
           <View style={styles.carouselContainer}>
             <View style={styles.sectionTitleContainer}>
-              <Text style={styles.sectionTitle}>Our Latest Courses</Text>
+              <Text style={styles.sectionTitle}>احدث الدورات</Text>
             </View>
             <ScrollView
               horizontal
@@ -176,7 +176,7 @@ export default function Home() {
 
           <View style={styles.carouselContainer}>
             <View style={styles.sectionTitleContainer}>
-              <Text style={styles.sectionTitle}>Our Latest Events</Text>
+              <Text style={styles.sectionTitle}>الاحداث</Text>
             </View>
             <ScrollView
               horizontal

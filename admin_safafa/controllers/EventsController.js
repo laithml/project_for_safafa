@@ -29,6 +29,23 @@ exports.getEvent = (req,res) => {
 
 }
 
+exports.hideEvent = (req, res) => {
+    console.log("hideEvent "+ req.params.id);
+    const refEvent = doc(db, "events", req.params.id);
+    updateDoc(refEvent, {isHidden: true}).then(() => {
+        res.status(200).send({message: "Event updated successfully"});
+    });
+}
+
+exports.showEvent = (req, res) => {
+    console.log("showEvent "+ req.params.id);
+
+    const refEvent = doc(db, "events", req.params.id);
+    updateDoc(refEvent, {isHidden: false}).then(() => {
+        res.status(200).send({message: "Event updated successfully"});
+    });
+}
+
 // Create a new event
 exports.createEvent = (req,res) => {
     console.log("create event" );

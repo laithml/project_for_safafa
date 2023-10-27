@@ -25,7 +25,7 @@ export default function Events({ navigation }) {
       <EventCard
         {...event}
         onPress={() => {
-          navigation.navigate("Events", { courseID: event.id });
+          navigation.navigate("الأحداث", { courseID: event.id });
         }}
       />
     );

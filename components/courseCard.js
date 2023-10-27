@@ -25,7 +25,7 @@ export function CourseCard({ description, id, img, name, price, onPress }) {
         coursePrice: price,
       });
     } else {
-      navigation.navigate("Login");
+      navigation.navigate("تسجيل الدخول");
     }
   };
 
@@ -47,7 +47,7 @@ export function CourseCard({ description, id, img, name, price, onPress }) {
         </View>
         <View style={styles.actionsContainer}>
           <TouchableOpacity style={styles.purchaseButton} onPress={handlePress}>
-            <Text style={styles.buttonText}>Purchase</Text>
+            <Text style={styles.buttonText}>الشراء</Text>
           </TouchableOpacity>
           <Text style={styles.price}>₪ {price}</Text>
         </View>

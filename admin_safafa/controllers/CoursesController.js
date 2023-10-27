@@ -18,6 +18,23 @@ exports.getCourses = (req, res) => {
 }
 
 
+exports.hideCourse = (req, res) => {
+    console.log("hideCourse "+ req.params.id);
+    const refCourse = doc(db, "Courses", req.params.id);
+    updateDoc(refCourse, {isHidden: true}).then(() => {
+        res.status(200).send({message: "Course updated successfully"});
+    });
+}
+
+exports.showCourse = (req, res) => {
+    console.log("showCourse "+ req.params.id);
+
+    const refCourse = doc(db, "Courses", req.params.id);
+    updateDoc(refCourse, {isHidden: false}).then(() => {
+        res.status(200).send({message: "Course updated successfully"});
+    });
+}
+
 // Get a single course
 exports.getCourse = (req, res) => {
     const refCourse = doc(db, "Courses", req.params.id);
@@ -44,6 +61,7 @@ exports.createCourse = (req, res) => {
         ageLimit: req.body.ageLimit,
         capacity: req.body.capacity,
         description: req.body.description,
+        isHidden: false,
         students: [],
     }
     console.log(data);

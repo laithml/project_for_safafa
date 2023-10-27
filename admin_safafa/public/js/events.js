@@ -9,6 +9,12 @@ $(document).ready(() => {
         res.json().then((data) => {
             eventTable.clear();
             Object.values(data).forEach((events) => {
+                if (events.isHidden) {
+                    events.isHidden = '<button class="btn btn-warning btn-circle show" data-id="' + events.id + '"><i class="fas fa-eye-slash"></i></button>';
+                } else {
+                    events.isHidden = '<button class="btn btn-warning btn-circle hide" data-id="' + events.id + '"><i class="fas fa-eye"></i></button>';
+                }
+
                 let eventsData = $('<tr>').append('<td>' + events.name + '</td>').
                 append('<td>' + '<img class="rounded-circle" width="200px" height="128px" src=' + events.img + '>' + '</td>').
                 append('<td>' + events.capacity + '</td>').
@@ -16,6 +22,9 @@ $(document).ready(() => {
                                               <button class="btn btn-primary btn-circle excel" data-name="${events.name}" data-id="${events.id}"><i class="fas fa-file-excel"></i></button>
                <button class="btn btn-success btn-circle list" data-id="${events.id}"><i class="fas fa-list"></i></button>
                <button class="btn btn-secondary btn-circle edit" data-id="${events.id}"><i class="fas fa-edit"></i></button>
+                ` +
+                            events.isHidden +
+                            `
                <button class="btn btn-danger btn-circle delete" data-id="${events.id}"><i class="fas fa-minus-circle"></i></button>`));
                 eventTable.row.add(eventsData);
             });
@@ -23,6 +32,37 @@ $(document).ready(() => {
         }).catch(error => console.error(error))
     })
 });
+
+$(document).on("click", ".hide", function () {
+    let eventID = $(this).data("id");
+
+    console.log(eventID + " hide");
+
+    fetch(`/event/${eventID}/hide`, {
+        method: "PUT", // Use the HTTP PUT method to update the resource
+    })
+        .then(() => {
+            console.log("event hidden successfully");
+            location.reload();
+        })
+        .catch((error) => console.error(error));
+});
+
+$(document).on("click", ".show", function () {
+    let eventID = $(this).data("id");
+
+    console.log(eventID + " show");
+
+    fetch(`/event/${eventID}/show`, {
+        method: "PUT", // Use the HTTP PUT method to update the resource
+    })
+        .then(() => {
+            console.log("event shown successfully");
+            location.reload();
+        })
+        .catch((error) => console.error(error));
+});
+
 
 $(document).on("click", ".edit", function () {
     // Get the event details from the current event item

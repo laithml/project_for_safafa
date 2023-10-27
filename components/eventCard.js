@@ -57,7 +57,7 @@ export function EventCard({ id, name, description, img }) {
       }
     } else {
       toggleModal(); // Close the modal
-      navigation.navigate("Login"); // navigate to login if not authenticated
+      navigation.navigate("تسجيل الدخول"); // navigate to login if not authenticated
     }
   };
 
@@ -74,7 +74,7 @@ export function EventCard({ id, name, description, img }) {
             </View>
             <View style={styles.line} />
             <TouchableOpacity style={styles.readButton} onPress={toggleModal}>
-              <Text style={styles.readButtonText}>Join Event / Read Details</Text>
+              <Text style={styles.readButtonText}>سجل للحدث / المزيد</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -102,14 +102,14 @@ export function EventCard({ id, name, description, img }) {
                     style={{ ...styles.openButton, backgroundColor: Colors.primary }}
                     onPress={handleJoin}
                 >
-                  <Text style={styles.textStyle}>Join</Text>
+                  <Text style={styles.textStyle}>الاتمضام</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={{ ...styles.openButton, backgroundColor: Colors.primary }}
                     onPress={toggleModal}
                 >
-                  <Text style={styles.textStyle}>Close</Text>
+                  <Text style={styles.textStyle}>إغلاق</Text>
                 </TouchableOpacity>
               </View>
             </ImageBackground>

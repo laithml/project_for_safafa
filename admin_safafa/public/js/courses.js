@@ -1,15 +1,14 @@
 $(document).ready(() => {
 
-//jj
     let coursesTable = $("#courses").DataTable({
         data: [],
         columns: [
-            {data: "name"},
-            {data: "image"},
-            {data: "price"},
-            {data: "capacity"},
-            {data: "description"},
-            {data: "manage"},
+            { data: "name" },
+            { data: "image" },
+            { data: "price" },
+            { data: "capacity" },
+            { data: "description" },
+            { data: "manage" },
         ],
     });
 
@@ -18,6 +17,12 @@ $(document).ready(() => {
         .then((data) => {
             coursesTable.clear();
             Object.values(data).forEach((course) => {
+                if (course.isHidden) {
+                    course.isHidden = '<button class="btn btn-warning btn-circle show" data-id="' + course.id + '"><i class="fas fa-eye-slash"></i></button>';
+                } else {
+                    course.isHidden = '<button class="btn btn-warning btn-circle hide" data-id="' + course.id + '"><i class="fas fa-eye"></i></button>';
+                }
+
                 let courseData = $("<tr>")
                     .append("<td>" + course.name + "</td>")
                     .append(
@@ -30,12 +35,13 @@ $(document).ready(() => {
                     .append("<td>" + course.description + "</td>")
                     .append(
                         $("<td>").html(
-
                             ` <button class="btn btn-primary btn-circle excel" data-name="${course.name}" data-id="${course.id}"><i class="fas fa-file-excel"></i></button>
-               <button class="btn btn-success btn-circle list" data-id="${course.id}"><i class="fas fa-list"></i></button>
-               <button class="btn btn-secondary btn-circle edit" data-id="${course.id}"><i class="fas fa-edit"></i></button>
-               <button class="btn btn-danger btn-circle delete" data-id="${course.id}"><i class="fas fa-minus-circle"></i></button>
-       `
+                            <button class="btn btn-secondary btn-circle edit" data-id="${course.id}"><i class="fas fa-edit"></i></button>
+                            ` +
+                            course.isHidden +
+                            `
+                            <button class="btn btn-danger btn-circle delete" data-id="${course.id}"><i class="fas fa-minus-circle"></i></button></td>
+                        `
                         )
                     );
                 coursesTable.row.add(courseData);
@@ -44,7 +50,40 @@ $(document).ready(() => {
         })
         .catch((error) => console.error(error));
 
-    $(document).on("click", ".excel", function () {
+    $(document).on("click", ".hide", function () {
+        let courseID = $(this).data("id");
+
+        console.log(courseID + " hide");
+
+        fetch(`/courses/${courseID}/hide`, {
+            method: "PUT", // Use the HTTP PUT method to update the resource
+        })
+            .then(() => {
+                console.log("Course hidden successfully");
+                location.reload();
+            })
+            .catch((error) => console.error(error));
+    });
+
+    $(document).on("click", ".show", function () {
+        let courseID = $(this).data("id");
+
+        console.log(courseID + " show");
+
+        fetch(`/courses/${courseID}/show`, {
+            method: "PUT", // Use the HTTP PUT method to update the resource
+        })
+            .then(() => {
+                console.log("Course shown successfully");
+                location.reload();
+            })
+            .catch((error) => console.error(error));
+    });
+
+
+
+
+$(document).on("click", ".excel", function () {
         let courseId = $(this).data("id");
         let courseName = $(this).data("name");
         fetch("/students/" + courseId)
@@ -71,61 +110,6 @@ $(document).ready(() => {
         link.download = courseName+"_students.xlsx";
         link.click();
     }
-
-
-
-
-    $(document).on("click", ".list", function () {
-        let id = $(this).data("id");
-        fetch("/students/" + id)
-            .then((res) => res.json())
-            .then((data) => {
-
-                if(data.length == 0){
-                    //there is no students in this course put it inside the modal
-                    $("#listStudentsBody").html("<h3>There is no students in this course</h3>");
-
-                    // Show the modal
-                    $("#studentModal").modal("show");
-
-
-                }else {
-
-                    // Create the HTML content for the student details
-                    let tableContent = `
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-                    data.forEach((student) => {
-                        tableContent += `
-                    <tr>
-                        <td>${student.fullName}</td>
-                        <td>${student.email}</td>
-                        <td>${student.phoneNumber}</td>
-                    </tr>
-                `;
-                    });
-                    tableContent += `
-                    </tbody>
-                </table>
-            `;
-                    // Put the HTML content inside the modal
-                    $("#listStudentsBody").html(tableContent);
-
-                    // Show the modal
-                    $("#studentModal").modal("show");
-
-                }
-            })
-            .catch((error) => console.error(error));
-    });
 
 
     $(document).on("click", ".edit", function () {
@@ -187,7 +171,6 @@ $(document).ready(() => {
             .fail((error) => {
                 // Handle the error response or display an error message
                 console.error("Error updating course details:", error);
-                // ...
             });
     });
 });

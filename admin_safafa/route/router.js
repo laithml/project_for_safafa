@@ -28,6 +28,11 @@ router.delete("/courses/:id",requireAuth, CourseController.deleteCourse);
 
 router.get("/students/:id",requireAuth, CourseController.getStudentCourses);
 
+router.put("/courses/:id/hide",requireAuth, CourseController.hideCourse);
+
+router.put("/courses/:id/show",requireAuth, CourseController.showCourse);
+
+
 router.get("/event",requireAuth, EventController.getEvents );
 
 router.post("/event",requireAuth, EventController.createEvent );
@@ -39,6 +44,11 @@ router.get("/event/:id/users",requireAuth, EventController.getEventUsers );
 router.put("/event/:id",requireAuth, EventController.updateEvent);
 
 router.delete("/event/:id",requireAuth, EventController.deleteEvent);
+
+router.put("/event/:id/hide",requireAuth, EventController.hideEvent);
+
+router.put("/event/:id/show",requireAuth, EventController.showEvent);
+
 
 
 

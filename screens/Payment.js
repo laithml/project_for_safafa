@@ -43,7 +43,7 @@ export default function Payment({ route, navigation }) {
 
   useEffect(() => {
     if (!user) {
-      navigation.replace("Login");
+      navigation.replace("تسجيل الدخول");
     }
   }, [user]);
 
@@ -90,7 +90,7 @@ export default function Payment({ route, navigation }) {
             console.log("Error adding student to the course:", error);
           });
       alert("Payment successful");
-      navigation.navigate("Courses");
+      navigation.navigate("الدورات");
     }, 2000);
   };
 

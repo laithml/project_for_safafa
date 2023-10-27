@@ -529,7 +529,7 @@ export default function SignUp() {
                                 // Immediately sign out after successful signup
                                 await auth.signOut();
 
-                                navigation.navigate("Login");
+                                navigation.navigate("تسجيل الدخول");
                             } else {
                                 // Handle sign-up error
                                 console.log("Sign-up failed");
@@ -561,7 +561,7 @@ export default function SignUp() {
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("Login")}
+                        onPress={() => navigation.navigate("تسجيل الدخول")}
                         style={{
                             padding: Spacing,
                         }}

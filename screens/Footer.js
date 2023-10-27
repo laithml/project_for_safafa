@@ -89,7 +89,7 @@ const Footer = () => {
     <View style={styles.footer}>
       <View style={styles.footerContent}>
         <View style={styles.iconGroup}>
-          <Text style={styles.iconGroupText}>Social Media</Text>
+          <Text style={styles.iconGroupText}>مواقع التواصل الاجتماعي</Text>
           <View style={styles.iconRow}>
             <TouchableOpacity
               onPress={handleYoutubeClick}
@@ -121,7 +121,7 @@ const Footer = () => {
           </View>
         </View>
         <View style={styles.iconGroup}>
-          <Text style={styles.iconGroupText}>Location</Text>
+          <Text style={styles.iconGroupText}>موقعنا</Text>
           <View style={styles.iconRow}>
             <TouchableOpacity
               onPress={handleWazeClick}
@@ -135,7 +135,7 @@ const Footer = () => {
           </View>
         </View>
         <View style={styles.iconGroup}>
-          <Text style={styles.iconGroupText}>Contact Info</Text>
+          <Text style={styles.iconGroupText}>الاتصال بنا</Text>
           <View style={styles.iconRow}>
             <TouchableOpacity
               onPress={handleEmailClick}

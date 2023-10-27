@@ -149,15 +149,15 @@ export default function App() {
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen
-                        name="Main Menu"
+                        name="القائمة الرئيسية"
                         options={{headerShown: false}}
                         component={DrawerNavigator}
                     />
-                    <Stack.Screen name="Login" component={Login}/>
-                    <Stack.Screen name="SignUp" component={SignUp}/>
-                    <Stack.Screen name="ForgetPassword" component={FP}/>
+                    <Stack.Screen name="تسجيل الدخول" component={Login}/>
+                    <Stack.Screen name="إنشاء حساب" component={SignUp}/>
+                    <Stack.Screen name="تغير كلمة المرور" component={FP}/>
                     <Stack.Screen
-                        name="Payment"
+                        name="الدفع"
                         component={Payment}
                         options={{
                             // Add this to your options
@@ -167,7 +167,7 @@ export default function App() {
                         }}
                     />
                     <Stack.Screen
-                        name="MyProfile"
+                        name="حسابي"
                         component={MyProfile}
                         options={{ headerShown: false }}
                     />

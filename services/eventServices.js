@@ -7,7 +7,8 @@ export async function getEvents() {
 
   await getDocs(refEvents).then((doc) => {
     doc.forEach((event) => {
-      eventList.push(event.data());
+      if(!event.data().isHidden)
+          eventList.push(event.data());
     });
   });
 

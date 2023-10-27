@@ -18,20 +18,17 @@ export default function AboutUs() {
   // Placeholder data for carousel items
   const carouselItems = [
     {
-      title: "Our Message",
+      title: "رسالتنا",
       description:
-        "We, the Board of Directors of Beit Safafa Sharafat Registered Association, operate based on our social and economic responsibility towards the residents of Beit Safafa and Sharafat. We support their initiatives and democratic movements, aligning with their needs and desires through mutual responsibility, shared partnership, and community engagement. We collaborate with various existing institutions in the town by building community strategies to develop and improve local services, particularly in the areas of education, infrastructure, and different aspects of life. We provide programs, activities, and supportive events in cultural, educational, health-related, recreational, religious, sports, environmental, social, and voluntary fields for various age groups, within a comfortable and suitable environment.",
-    },
+          "نحن، مجلس إدارة جمعية بيت صفافا شرفات المسجلة، نعمل انطلاقا من مسؤوليتنا الاجتماعية والاقتصادية تجاه سكان بيت صفافا وشرفات. نحن ندعم مبادراتهم وحركاتهم الديمقراطية، بما يتماشى مع احتياجاتهم ورغباتهم من خلال المسؤولية المتبادلة، المشتركة الشراكة والمشاركة المجتمعية. نتعاون مع مختلف المؤسسات القائمة في المدينة من خلال بناء استراتيجيات مجتمعية لتطوير وتحسين الخدمات المحلية، لا سيما في مجالات التعليم والبنية التحتية وجوانب الحياة المختلفة. نقدم البرامج والأنشطة والفعاليات الداعمة في المجالات الثقافية والتعليمية والصحية والترفيهية والدينية والرياضية والبيئية والاجتماعية والتطوعية لمختلف الفئات العمرية، ضمن بيئة مريحة ومناسبة."    },
     {
-      title: "Our Goals",
+      title: "أهدافنا",
       description:
-        "Our goals include developing and creating local grassroots leadership and involving the local community in designing and planning the future policies of the town. We aim to represent the interests of the local community before authorities and have an impact on decision-makers within the municipality and other relevant authorities. The council, its administration, and employees serve as a resource to assist residents and serve the town and its population in matters related to the public interest and the improvement of local services. We focus on enhancing the capabilities and skills of council employees to provide services to the local community in the best possible way. We prioritize women's issues and provide various programs and activities to empower and educate them, as well as enhance their status and role within the family and society. Additionally, we pay attention to the elderly population, providing a suitable and comfortable environment along with activities and events to meet their needs.",
-    },
+          "تشمل أهدافنا تطوير وإنشاء القيادة الشعبية المحلية وإشراك المجتمع المحلي في تصميم وتخطيط السياسات المستقبلية للمدينة. ونحن نهدف إلى تمثيل مصالح المجتمع المحلي أمام السلطات ويكون لها تأثير على صناع القرار داخل البلدية و والجهات الأخرى ذات العلاقة، ويعتبر المجلس وإدارته وموظفوه مصدراً لمساعدة الأهالي وخدمة البلدة وسكانها في الأمور المتعلقة بالمصلحة العامة وتحسين الخدمات المحلية، ونركز على تعزيز قدرات ومهارات المجلس الموظفين على تقديم الخدمات للمجتمع المحلي بأفضل صورة ممكنة، ونعطي الأولوية لقضايا المرأة ونقدم البرامج والأنشطة المتنوعة لتمكينها وتثقيفها وتعزيز مكانتها ودورها داخل الأسرة والمجتمع، بالإضافة إلى ذلك، نولي الاهتمام كبار السن وتوفير البيئة المناسبة والمريحة لهم والأنشطة والفعاليات التي تلبي احتياجاتهم.",    },
     {
-      title: "Our Values",
+      title: "قيمنا",
       description:
-        "We aspire for every individual in the community to feel that the council is their second home. We derive our values in our work approach and service delivery from the culture, customs, and traditions of the local community.",
-    },
+          "نطمح أن يشعر كل فرد في المجتمع بأن المجلس هو بيته الثاني. ونحن نستمد قيمنا في نهج عملنا وتقديم الخدمات من ثقافة وعادات وتقاليد المجتمع المحلي.",    },
   ];
 
   const staffMembers = [
@@ -70,7 +67,7 @@ export default function AboutUs() {
           style={styles.button}
           onPress={() => openPopup(item.description)}
         >
-          <Text style={styles.buttonText}>Read More</Text>
+          <Text style={styles.buttonText}>المزيد</Text>
         </TouchableOpacity>
       </View>
     );
@@ -90,7 +87,7 @@ export default function AboutUs() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.baseText}>
-          <Text style={styles.titleText}>Beit Safafa Center</Text>
+          <Text style={styles.titleText}>المركز الجماهيري بيت صفاف - شرفات</Text>
           <Carousel
             data={carouselItems}
             renderItem={renderItem}
@@ -98,7 +95,7 @@ export default function AboutUs() {
             itemWidth={Dimensions.get("window").width * 0.8}
             layout="default"
           />
-          <Text style={styles.titleText}>Our Staff</Text>
+          <Text style={styles.titleText}>الطاقم</Text>
           <Carousel
             data={staffMembers}
             renderItem={({ item }) => (

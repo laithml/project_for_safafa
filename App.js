@@ -64,7 +64,7 @@ const CustomDrawerContent = (props) => {
             .signOut()
             .then(() => {
                 setUser(null);
-                props.navigation.navigate('Home'); // Redirect user to home screen after logout
+                props.navigation.navigate('الرئيسية'); // Redirect user to home screen after logout
             })
             .catch((error) => console.log(error));
     };
@@ -106,18 +106,18 @@ const CustomDrawerContent = (props) => {
                     >
                         {user ? (
                             <>
-                                <Button title="My Profile" onPress={() => props.navigation.navigate("MyProfile")}/>
-                                <Button title="Logout" onPress={handleLogout}/>
+                                <Button title="حسابي" onPress={() => props.navigation.navigate("حسابي")}/>
+                                <Button title="تسجيل الخروج" onPress={handleLogout}/>
                             </>
                         ) : (
                             <>
                                 <Button
-                                    title="Login"
-                                    onPress={() => props.navigation.navigate("Login")}
+                                    title="تسجيل دخول"
+                                    onPress={() => props.navigation.navigate("تسجيل الدخول")}
                                 />
                                 <Button
-                                    title="SignUp"
-                                    onPress={() => props.navigation.navigate("SignUp")}
+                                    title="تسجيل حساب"
+                                    onPress={() => props.navigation.navigate("إنشاء حساب")}
                                 />
                             </>
                         )}
@@ -134,10 +134,10 @@ function DrawerNavigator() {
             initialRouteName="Home"
             drawerContent={(props) => <CustomDrawerContent {...props} />}
         >
-            <Drawer.Screen name="Home" component={HomeScreen}/>
-            <Drawer.Screen name="Events" component={EventsScreen}/>
-            <Drawer.Screen name="Courses" component={CoursesScreen}/>
-            <Drawer.Screen name="About Us" component={AboutUsScreen}/>
+            <Drawer.Screen name="الرئيسية" component={HomeScreen}/>
+            <Drawer.Screen name="الأحداث" component={EventsScreen}/>
+            <Drawer.Screen name="الدورات" component={CoursesScreen}/>
+            <Drawer.Screen name="من نحن" component={AboutUsScreen}/>
         </Drawer.Navigator>
     );
 }
@@ -162,7 +162,7 @@ export default function App() {
                         options={{
                             // Add this to your options
                             headerLeft: () => (
-                                user ? <></> : <Button title="Login" onPress={() => navigation.navigate('Login')}/>
+                                user ? <></> : <Button title="تسجيل الدخول" onPress={() => navigation.navigate('تسجيل الدخول')}/>
                             ),
                         }}
                     />

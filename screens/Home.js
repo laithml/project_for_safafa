@@ -122,7 +122,7 @@ export default function Home() {
                   source={require("../assets/click-icon.png")}
                   style={styles.clickIndicatorImage}
                 />
-                <Text style={styles.clickIndicatorText}>Tap to Learn More</Text>
+                <Text style={styles.clickIndicatorText}>اضغط للمزيد</Text>
               </View>
             </View>
           )}
@@ -265,8 +265,10 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     alignSelf: "flex-start",
+    alignItems: "flex-start"
   },
   sectionTitle: {
+    alignSelf: "flex-start",
     fontSize: FontSize.medium,
     fontWeight: "bold",
     paddingLeft: 10,

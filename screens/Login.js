@@ -91,7 +91,7 @@ export default function Login() {
                 </View>
                 <View>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("ForgetPassword")}
+                        onPress={() => navigation.navigate("تغير كلمة المرور")}
                         style={{
                             alignSelf: "flex-end",
                         }}

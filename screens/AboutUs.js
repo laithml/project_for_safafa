@@ -30,22 +30,41 @@ export default function AboutUs() {
       description:
           "نطمح أن يشعر كل فرد في المجتمع بأن المجلس هو بيته الثاني. ونحن نستمد قيمنا في نهج عملنا وتقديم الخدمات من ثقافة وعادات وتقاليد المجتمع المحلي.",    },
   ];
-
   const staffMembers = [
     {
-      name: "John Doe",
-      title: "CEO",
-      image:
-        "https://www.shutterstock.com/image-photo/head-shot-portrait-close-smiling-260nw-1714666150.jpg",
+      name: "باسمة صلاح",
+      title: "مركزة قسم الجيل الذهبي",
+      image: require('../assets/beit_safaf_staff/basema_salah.jpeg'),
     },
     {
-      name: "Jane Smith",
-      title: "CFO",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGw3RtValAUS9swRhHBx1pqlzp4H6nn5OUAg&usqp=CAU",
+      name: "بتول عثمان",
+      title: "مركزة قسم النساء",
+      image: require('../assets/beit_safaf_staff/batool.jpeg'),
     },
-    // Add more staff members as needed
+    {
+      name: "فريد جابر",
+      title: "مركز النشاطات الغير منهجية",
+      image: require('../assets/beit_safaf_staff/Fareed.jpeg'),
+    },
+    {
+      name: "هالة عليان",
+      title: "مدققة حسابات",
+      image: require('../assets/beit_safaf_staff/Hala_alyan.jpeg'),
+    },
+
+    {
+      name: "ريم سرحان",
+      title: "مديرة",
+      image: require('../assets/beit_safaf_staff/Reem.jpeg'),
+    },
+    {
+      name: "حنين عليان",
+            title: "مركزة الشباب والثقافة ونشاط لكل ولد",
+            image: require('../assets/beit_safaf_staff/Haneen.jpeg'),
+          },
+
   ];
+
 
   const [showPopup, setShowPopup] = useState(false);
   const [popupText, setPopupText] = useState("");
@@ -76,7 +95,7 @@ export default function AboutUs() {
   const StaffCarouselItem = ({ name, title, image }) => {
     return (
       <View style={styles.staffCarouselItem}>
-        <Image source={{ uri: image }} style={styles.staffImage} />
+        <Image source={image} style={styles.staffImage} />
         <Text style={styles.staffName}>{name}</Text>
         <Text style={styles.staffTitle}>{title}</Text>
       </View>

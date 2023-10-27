@@ -8,6 +8,7 @@ export async function getCourses() {
 
   await getDocs(refCourses).then((doc) => {
     doc.forEach((course) => {
+      if(!course.data().isHidden)
       coursesList.push(course.data());
     });
   });
